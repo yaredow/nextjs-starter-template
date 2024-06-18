@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   DropdownMenu,
@@ -7,12 +7,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import Image from 'next/image';
-import { Button } from './ui/button';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { UserIcon } from 'lucide-react';
+} from "@/components/ui/dropdown-menu";
+import Image from "next/image";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { UserIcon } from "lucide-react";
 
 export default function UserMenu() {
   const router = useRouter();
@@ -23,17 +23,17 @@ export default function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant='outline'
-          size='icon'
-          className='overflow-hidden rounded-full'
+          variant="outline"
+          size="icon"
+          className="overflow-hidden rounded-full"
         >
           {isLoggedIn ? (
             <Image
-              src={'#'}
-              alt='User profile picture'
+              src={"#"}
+              alt="User profile picture"
               width={50}
               height={50}
-              className='aspect-square rounded-full bg-background object-cover'
+              className="aspect-square rounded-full bg-background object-cover"
             />
           ) : (
             <UserIcon strokeWidth={1.5} />
@@ -41,18 +41,18 @@ export default function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       {isAdmin ? (
-        <DropdownMenuContent align='end'>
+        <DropdownMenuContent align="end">
           <DropdownMenuLabel>Your account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href='/account'>Profile</Link>
+            <Link href="/account">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href='/account/settings'>Settings</Link>
+            <Link href="/account/settings">Settings</Link>
           </DropdownMenuItem>
           {isAdmin ? (
             <DropdownMenuItem>
-              <Link href='/dashboard'>Dashboard</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </DropdownMenuItem>
           ) : null}
           <DropdownMenuSeparator />

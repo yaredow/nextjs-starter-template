@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from '../ui/navigation-menu';
+} from "../ui/navigation-menu";
 
 type NavLinkProps = {
   href: string;
