@@ -27,7 +27,6 @@
     "lucide-react": "^0.395.0",
     "next": "14.2.4",
     "next-themes": "^0.3.0",
-    "prettier": "^3.3.2",
     "prisma": "^5.15.0",
     "react": "^18",
     "react-dom": "^18",
@@ -49,6 +48,8 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
