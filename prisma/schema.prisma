@@ -36,17 +36,19 @@ model PasswordResetToken {
 }
 
 model User {
-  id            String    @id
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime
-  password      String?
-  role          UserRole  @default(USER)
-  userName      String    @default("")
-  Account       Account[]
+  id                    String                 @id
+  name                  String?
+  email                 String                 @unique
+  emailVerified         DateTime?
+  image                 String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime
+  isTwoFactorEnabled    Boolean                @default(false)
+  password              String?
+  role                  UserRole               @default(USER)
+  userName              String                 @default("")
+  Account               Account[]
+  TwoFactorConfirmation TwoFactorConfirmation?
 }
 
 model VerificationToken {
@@ -61,4 +63,23 @@ model VerificationToken {
 enum UserRole {
   ADMIN
   USER
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid()) // Use uuid for PostgreSQL
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("two_factor_token")
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid()) // Use uuid for PostgreSQL
+  userId String // Use String for userId to match UUID type
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+  @@map("two_factor_confirmation")
 }
