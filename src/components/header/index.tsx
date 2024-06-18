@@ -16,7 +16,7 @@ import UserMenu from "@/components/user-menu";
 
 function Header() {
   return (
-    <header className="sticky inset-0 inset-y-0 right-0 z-10 w-full border-b bg-background px-4 py-3 text-secondary-body dark:text-white md:px-12">
+    <header className="text-secondary-body sticky inset-0 inset-y-0 right-0 z-10 w-full border-b bg-background px-4 py-3 dark:text-white md:px-12">
       <nav className="flex items-center justify-between">
         <Link href="/">
           <div className="flex items-center justify-between space-x-2">
@@ -30,9 +30,9 @@ function Header() {
             <h1 className="font-logo text-xl font-bold">Buchi</h1>
           </div>
         </Link>
-        <div className=" flex flex-row gap-8">
+        <div className="flex flex-row gap-8">
           <div className="hidden md:flex">
-            <ul className="flex gap-[1.2rem] font-main">
+            <ul className="font-main flex gap-[1.2rem]">
               {navLinks.map((navLink, index) => (
                 <li key={index}>
                   <NavLink href={navLink.src}>{navLink.title}</NavLink>
@@ -76,7 +76,7 @@ function Header() {
 
               <div className="mt-8 flex flex-col gap-6">
                 <div className="flex">
-                  <ul className="-mx-2 flex flex-col gap-[1.2rem] font-main">
+                  <ul className="font-main -mx-2 flex flex-col gap-[1.2rem]">
                     {navLinks.map((navLink, index) => (
                       <li key={index}>
                         <NavLink href={navLink.src}>{navLink.title}</NavLink>
@@ -85,13 +85,13 @@ function Header() {
                   </ul>
                 </div>
 
-                <hr className=" w-full flex-grow" />
+                <hr className="w-full flex-grow" />
 
                 <div className="mt-[10px] flex justify-between gap-[8px]">
                   <div className="flex flex-row gap-[5px]">
                     <Button
                       variant="link"
-                      className=" flex flex-row gap-2 text-lg"
+                      className="flex flex-row gap-2 text-lg"
                     >
                       Login
                       <span>
