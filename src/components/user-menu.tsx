@@ -11,25 +11,34 @@ import {
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { UserIcon } from "lucide-react";
 
 export default function UserMenu() {
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const isLoggedIn = false;
-  const isAdmin = false;
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "http://localhost:3000" });
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          onClick={() => {
+            if (status === "unauthenticated") {
+              router.replace("/auth/signin");
+            }
+          }}
           variant="outline"
           size="icon"
           className="overflow-hidden rounded-full"
         >
-          {isLoggedIn ? (
+          {session ? (
             <Image
-              src={"#"}
+              src={session?.user.image || ""}
               alt="User profile picture"
               width={50}
               height={50}
@@ -40,23 +49,17 @@ export default function UserMenu() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      {isAdmin ? (
+      {status === "authenticated" ? (
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Your account</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            {session.user ? session.user?.name : "Your Account"}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href="/account">Profile</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/account/settings">Settings</Link>
-          </DropdownMenuItem>
-          {isAdmin ? (
-            <DropdownMenuItem>
-              <Link href="/dashboard">Dashboard</Link>
-            </DropdownMenuItem>
-          ) : null}
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Log out</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       ) : null}
     </DropdownMenu>

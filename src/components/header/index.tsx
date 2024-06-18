@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Logo from "@/../public/images/logo.png";
 import Link from "next/link";
@@ -13,8 +11,9 @@ import NavLink from "@/components/header/nav-link";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserMenu from "@/components/user-menu";
+import { auth } from "@/auth";
 
-function Header() {
+export default async function Header() {
   return (
     <header className="text-secondary-body sticky inset-0 inset-y-0 right-0 z-10 w-full border-b bg-background px-4 py-3 dark:text-white md:px-12">
       <nav className="flex items-center justify-between">
@@ -108,5 +107,3 @@ function Header() {
     </header>
   );
 }
-
-export default Header;
