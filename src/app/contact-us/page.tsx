@@ -1,3 +1,3 @@
 export default function Page() {
-  return <div>Breeds</div>;
+  return <h1>Contact Us</h1>;
 }
