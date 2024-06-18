@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run format:fix && npm run test && next build",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore .",
     "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -25,6 +27,7 @@
     "lucide-react": "^0.395.0",
     "next": "14.2.4",
     "next-themes": "^0.3.0",
+    "prettier": "^3.3.2",
     "prisma": "^5.15.0",
     "react": "^18",
     "react-dom": "^18",
