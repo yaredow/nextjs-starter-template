@@ -7,6 +7,6 @@ describe("Contact us page", () => {
     render(<ContactUs />);
 
     const header = screen.getByRole("heading", { level: 1 });
-    expect(header).toHaveTextContent("Contact U");
+    expect(header).toHaveTextContent("Contact Us");
   });
 });
