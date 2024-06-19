@@ -36,17 +36,17 @@ model PasswordResetToken {
 }
 
 model User {
-  id                    String                 @id
+  id                    String                 @id @default(cuid())
   name                  String?
   email                 String                 @unique
   emailVerified         DateTime?
   image                 String?
   createdAt             DateTime               @default(now())
-  updatedAt             DateTime
+  updatedAt             DateTime               @updatedAt
   isTwoFactorEnabled    Boolean                @default(false)
   password              String?
   role                  UserRole               @default(USER)
-  userName              String                 @default("")
+  userName              String?                @default("")
   Account               Account[]
   TwoFactorConfirmation TwoFactorConfirmation?
 }

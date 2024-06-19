@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export type ErrorAndSuccessType = {
+  error?: string;
+  success?: string;
+  twoFactor?: boolean;
+};
+
 export const UpdateAccountFormSchema = z.object({
   name: z.string().refine(
     (value) => {
