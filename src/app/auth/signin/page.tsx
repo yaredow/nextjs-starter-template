@@ -1,5 +1,5 @@
 import CardWrapper from "@/components/auth/CardWrapper";
-import SigninForm from "@/components/form/login-form";
+import SigninForm from "@/components/form/signin-form";
 
 export const metadata = {
   title: "Sign In",

@@ -19,7 +19,7 @@ import { authenticate } from "@/server/actions/auth/actions";
 import { FormError } from "../FormError";
 import { loginFormSchema } from "@/lib/schema";
 
-export default function LoginForm() {
+export default function SigninForm() {
   const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
