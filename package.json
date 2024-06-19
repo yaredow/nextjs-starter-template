@@ -13,7 +13,8 @@
     "coverage": "jest --coverage",
     "cypress:open": "cypress open",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "email:dev": "email dev --dir src/emails"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.2.0",
@@ -35,6 +36,7 @@
     "prisma": "^5.15.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-email": "^2.1.4",
     "sharp": "^0.33.4",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
