@@ -11,7 +11,6 @@ import NavLink from "@/components/header/nav-link";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserMenu from "@/components/user-menu";
-import { auth } from "@/auth";
 
 export default async function Header() {
   return (
