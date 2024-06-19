@@ -8,7 +8,6 @@ import PasswordResetEmail from "@/emails/PasswordResetEmail";
 import AdminNotificationEmail from "@/emails/AdminNotificationEmail";
 import OrderConfirmationEmail from "@/emails/OrderConfirmationEmail";
 import { OrderItemsType } from "../../../../types/order";
-import NewsletterEmail from "@/emails/NewsLetterSubscribingEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
