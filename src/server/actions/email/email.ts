@@ -6,8 +6,6 @@ import WelcomeEmail from "@/emails/welcomeEmail";
 import AccountVerificationEmail from "@/emails/AccountVerificationEmail";
 import PasswordResetEmail from "@/emails/PasswordResetEmail";
 import AdminNotificationEmail from "@/emails/AdminNotificationEmail";
-import OrderConfirmationEmail from "@/emails/OrderConfirmationEmail";
-import { OrderItemsType } from "../../../../types/order";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -99,45 +97,5 @@ export const sendWelcomeEmail = async (name: string, email: string) => {
     to: email,
     subject: "Welcome to Konjo habesha shop",
     react: WelcomeEmail({ firstName }),
-  });
-};
-
-export const sendOrderConfirmationEmail = async (
-  customerName: string,
-  orderNumber: string,
-  orderDate: string,
-  items: OrderItemsType[],
-  totalAmount: number,
-  email: string,
-) => {
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: email,
-    subject: "Welcome to Konjo habesha shop",
-    react: OrderConfirmationEmail({
-      customerName,
-      orderNumber,
-      orderDate,
-      items,
-      totalAmount,
-    }),
-  });
-};
-
-export const sendNewsLetterSubscriptionConfirmationEmail = async (
-  name: string,
-  email: string,
-  token: string,
-) => {
-  const firstName = name.split(" ")[0];
-  const unsubscribeUrl = `https://konjo-habesha-fashion.vercel.app/newsletter?token=${token}`;
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: email,
-    subject: "Newsletter Subscription confirmation",
-    react: NewsletterEmail({
-      firstName,
-      unsubscribeUrl,
-    }),
   });
 };
