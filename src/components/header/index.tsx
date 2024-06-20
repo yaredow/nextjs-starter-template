@@ -1,6 +1,3 @@
-import Image from "next/image";
-import Logo from "@/../public/images/logo.png";
-import Link from "next/link";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { MenuIcon, MoveRight } from "lucide-react";
@@ -16,18 +13,7 @@ export default async function Header() {
   return (
     <header className="text-secondary-body sticky inset-0 inset-y-0 right-0 z-10 w-full border-b bg-background px-4 py-3 dark:text-white md:px-12">
       <nav className="flex items-center justify-between">
-        <Link href="/">
-          <div className="flex items-center justify-between space-x-2">
-            <Image
-              src={Logo}
-              alt="an image of a dog in an orange color"
-              width={50}
-              height={50}
-              priority
-            />
-            <h1 className="font-logo text-xl font-bold">Buchi</h1>
-          </div>
-        </Link>
+        Logo
         <div className="flex flex-row gap-8">
           <div className="hidden md:flex">
             <ul className="font-main flex gap-[1.2rem]">
@@ -49,7 +35,6 @@ export default async function Header() {
             </div>
           </div>
         </div>
-
         {/* Mobile navigation */}
         <div className="cursor-pointer text-black dark:text-white md:hidden">
           <Sheet>

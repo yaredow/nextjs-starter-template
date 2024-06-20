@@ -8,9 +8,9 @@ import { AuthProvider } from "@/components/auth-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Buchi",
+  title: "Title",
   description:
-    "Buchi is a comprehensive website dedicated to providing detailed information about various dog breeds. Whether you&apos;re looking to adopt a new furry friend or learn more about your current companion, Buchi has you covered. Explore breed characteristics, care tips, and more to ensure you and your dog live happily ever after.",
+    "description",
 };
 
 export default function RootLayout({
@@ -20,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} relative flex min-h-screen flex-col`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -29,7 +31,7 @@ export default function RootLayout({
         >
           <AuthProvider>
             <Header />
-            {children}
+            <div className="m-12">{children}</div>
           </AuthProvider>
         </ThemeProvider>
       </body>
