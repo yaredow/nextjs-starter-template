@@ -14,7 +14,7 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **ESLint and Prettier**: Ensuring code quality and consistency.
 - **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
 - **dotenv**: Easy management of environment variables.
-- **next-seo** and **next-sitemap**: SEO and sitemap management for better search engine visibility.
+
 
 ## Getting Started
 
