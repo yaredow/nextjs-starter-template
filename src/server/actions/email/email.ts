@@ -91,11 +91,10 @@ export const sendAdminNotificationEmail = async (
 };
 
 export const sendWelcomeEmail = async (name: string, email: string) => {
-  const firstName = name.split(" ")[0];
   await resend.emails.send({
     from: "onboarding@resend.dev",
     to: email,
     subject: "Welcome to Konjo habesha shop",
-    react: WelcomeEmail({ firstName }),
+    react: WelcomeEmail({ firstName: name }),
   });
 };
