@@ -25,13 +25,13 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 
 Clone the repository and start building your application with confidence!
 
-```sh
+```
 git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
 ```
 
-````
+
 
 ### Usage
 
@@ -118,4 +118,4 @@ This project is licensed under the MIT License.
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-````
+
