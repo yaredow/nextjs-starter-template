@@ -1,8 +1,8 @@
-### nextjs-starter-template
+# nextjs-starter-template
 
 A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, Auth.js, Prisma ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
 
-### Features
+## Features
 
 - **TypeScript**: Strongly-typed language for better code quality and developer experience.
 - **Next.js**: Powerful React framework with server-side rendering.
@@ -16,64 +16,101 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **dotenv**: Easy management of environment variables.
 - **next-seo** and **next-sitemap**: SEO and sitemap management for better search engine visibility.
 
-### Getting Started
+## Getting Started
 
 Clone the repository and start building your application with confidence!
 
 ```sh
-git clone https://github.com/yourusername/nextjs-starter-template.git
+git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
 ```
 
+````
+
 ### Usage
 
-1. **Install Dependencies**:
+1. Clone the repository:
 
-   ```sh
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+   ```
+
+2. Install dependencies:
+
+   ```bash
    npm install
    ```
 
-2. **Set Up Environment Variables**:
+3. Create a `.env` file by copying the `.env.example` file:
 
-   Create a `.env.local` file in the root of your project and add your configuration:
-
-   ```env
-   DATABASE_URL=your-database-url
-   GOOGLE_CLIENT_ID=your-google-client-id
-   GOOGLE_CLIENT_SECRET=your-google-client-secret
+   ```bash
+   cp .env.example .env
    ```
 
-3. **Run Prisma Migrations**:
+4. Create a `.env.local` file by copying the `.env.local.example` file:
 
-   ```sh
-   npx prisma migrate dev --name init
+   ```bash
+   cp .env.local.example .env.local
    ```
 
-4. **Run the Development Server**:
+5. Open the `.env` and `.env.local` files and replace the placeholder values with your actual environment variable values.
 
-   ```sh
+6. Run the development server:
+
+   ```bash
    npm run dev
    ```
 
-5. **Run Tests**:
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-   - **Unit and Integration Tests**:
+## Running Tests
 
-     ```sh
-     npm test
-     ```
+- **End-to-End Tests (Cypress)**:
 
-   - **End-to-End Tests**:
+  To run Cypress end-to-end tests, use the following command:
 
-     ```sh
-     npm run cypress:open
-     ```
+  ```bash
+  npm run cypress
+  ```
 
-### License
+- **Unit Tests (Jest)**:
+
+  To run Jest unit tests, use the following command:
+
+  ```bash
+  npm run test
+  ```
+
+## Running React Email in Development
+
+To start the React Email development server, use the following command:
+
+```bash
+npm run email:dev
+```
+
+## Pre-commit Hook
+
+This project uses [Husky](https://github.com/typicode/husky) to manage Git hooks. When you commit a change, Husky runs the following commands automatically:
+
+```bash
+npm run format:fix && npm run lint && npm test
+```
+
+- `npm run format:fix`: This command formats your code using a formatter (e.g., Prettier).
+- `npm run lint`: This command runs the linter to check for code quality issues.
+- `npm test`: This command runs the test suite to ensure that your changes do not break existing functionality.
+
+These commands help maintain code quality and consistency across the project.
+
+## License
 
 This project is licensed under the MIT License.
 
-### Contributing
+## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
+
+````
