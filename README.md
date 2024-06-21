@@ -32,26 +32,26 @@ npm install
 
 1. Clone the repository:
 
-   ```bash
+   ```
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
    ```
 
 2. Install dependencies:
 
-   ```bash
+   ```
    npm install
    ```
 
 3. Create a `.env` file by copying the `.env.example` file:
 
-   ```bash
+   ```
    cp .env.example .env
    ```
 
 4. Create a `.env.local` file by copying the `.env.local.example` file:
 
-   ```bash
+   ```
    cp .env.local.example .env.local
    ```
 
@@ -59,7 +59,7 @@ npm install
 
 6. Run the development server:
 
-   ```bash
+   ```
    npm run dev
    ```
 
@@ -71,7 +71,7 @@ npm install
 
   To run Cypress end-to-end tests, use the following command:
 
-  ```bash
+  ```
   npm run cypress
   ```
 
@@ -79,7 +79,7 @@ npm install
 
   To run Jest unit tests, use the following command:
 
-  ```bash
+  ```
   npm run test
   ```
 
@@ -87,7 +87,7 @@ npm install
 
 To start the React Email development server, use the following command:
 
-```bash
+```
 npm run email:dev
 ```
 
@@ -95,7 +95,7 @@ npm run email:dev
 
 This project uses [Husky](https://github.com/typicode/husky) to manage Git hooks. When you commit a change, Husky runs the following commands automatically:
 
-```bash
+```
 npm run format:fix && npm run lint && npm test
 ```
 
