@@ -18,7 +18,7 @@ export const metadata = () => {
 
 export default function Page() {
   return (
-    <div className="w-full max-w-md">
+    <div className="mx-auto w-full max-w-md">
       <Tabs defaultValue="profile">
         <div className="flex min-h-[75vh] flex-col items-center justify-center">
           <TabsList className="grid w-full grid-cols-2 border-b border-gray-200 dark:border-gray-700">

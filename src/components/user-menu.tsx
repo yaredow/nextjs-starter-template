@@ -23,8 +23,6 @@ export default function UserMenu() {
     signOut({ callbackUrl: "http://localhost:3000" });
   };
 
-  console.log(session);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -61,7 +59,7 @@ export default function UserMenu() {
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href="/profile/setting">Profile</Link>
+            <Link href="/profile/setting">Setting</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
