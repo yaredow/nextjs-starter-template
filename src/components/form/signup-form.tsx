@@ -26,7 +26,8 @@ export default function SignupForm() {
   const form = useForm<z.infer<typeof SignupFormSchema>>({
     resolver: zodResolver(SignupFormSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -56,25 +57,47 @@ export default function SignupForm() {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col space-y-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      {...field}
-                      placeholder="Name"
-                      type="text"
-                    />
-                  </FormControl>
-                  <FormMessage className="mx-2" />
-                </FormItem>
-              );
-            }}
-          />
+          <div className="flex flex-row gap-2">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        placeholder="First Name"
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormMessage className="mx-2" />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        {...field}
+                        placeholder="Last Name"
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormMessage className="mx-2" />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
 
           <FormField
             control={form.control}

@@ -4,7 +4,7 @@ import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
-import { loginFormSchema } from "@/lib/schema";
+import { SigninFormSchema } from "@/lib/schema";
 
 export default {
   providers: [
@@ -31,7 +31,7 @@ export default {
         try {
           let user = null;
 
-          const parsedData = loginFormSchema.safeParse({
+          const parsedData = SigninFormSchema.safeParse({
             email: credentials.email,
             password: credentials.password,
           });

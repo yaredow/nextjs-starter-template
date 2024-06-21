@@ -15,7 +15,7 @@ import {
   UpdateAccountFormSchema,
   UpdatePasswordFormSchema,
   forgotPasswordFormSchema,
-  loginFormSchema,
+  SigninFormSchema,
 } from "@/lib/schema";
 import { AuthError } from "next-auth";
 import { z } from "zod";
@@ -36,9 +36,9 @@ import {
 } from "@/server/actions/email/email";
 
 export async function authenticate(
-  values: z.infer<typeof loginFormSchema>,
+  values: z.infer<typeof SigninFormSchema>,
 ): Promise<ErrorAndSuccessType> {
-  const validatedFields = loginFormSchema.safeParse(values);
+  const validatedFields = SigninFormSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid data" };
   }
@@ -173,7 +173,7 @@ export async function registerAction(
     return { error: "Invalid data" };
   }
 
-  const { name, email, password } = validatedFields.data;
+  const { firstName, lastName, email, password } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
 
@@ -184,7 +184,7 @@ export async function registerAction(
   const hashedPassword = await bcrypt.hash(password, 10);
   await prisma.user.create({
     data: {
-      name,
+      name: `${firstName} ${lastName}`,
       email,
       password: hashedPassword,
     },
@@ -195,7 +195,7 @@ export async function registerAction(
   await sendVerificationEmail(
     verificationToken.email,
     verificationToken.token,
-    name,
+    firstName,
   );
 
   return { success: "Confirmation email sent" };

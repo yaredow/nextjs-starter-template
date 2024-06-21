@@ -36,7 +36,7 @@ export const UpdatePasswordFormSchema = z
     },
   );
 
-export const loginFormSchema = z.object({
+export const SigninFormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(4),
   twoFactor: z.optional(z.string()),
@@ -71,17 +71,8 @@ export const ResetPasswordFormSchema = z
 
 export const SignupFormSchema = z
   .object({
-    name: z.string().refine(
-      (value) => {
-        if (value !== "") {
-          const names = value.trim().split(" ");
-          return names.length === 2 && names.every((name) => name.length > 0);
-        }
-      },
-      {
-        message: "Please enter your full name with both first and last names.",
-      },
-    ),
+    firstName: z.string().nonempty({ message: "First name is required" }),
+    lastName: z.string().nonempty({ message: "Last name is required" }),
     email: z.string().email({ message: "Please enter a valid email." }).trim(),
     password: z
       .string()
@@ -99,7 +90,7 @@ export const SignupFormSchema = z
       return data.password === data.passwordConfirm;
     },
     {
-      message: "Password do not match",
+      message: "Passwords do not match",
       path: ["passwordConfirm"],
     },
   );

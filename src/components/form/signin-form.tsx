@@ -17,7 +17,7 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { authenticate } from "@/server/actions/auth/actions";
 import { FormError } from "../FormError";
-import { loginFormSchema } from "@/lib/schema";
+import { SigninFormSchema } from "@/lib/schema";
 
 export default function SigninForm() {
   const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
@@ -30,15 +30,15 @@ export default function SigninForm() {
       ? "Email already used with different provider"
       : "";
 
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
+  const form = useForm<z.infer<typeof SigninFormSchema>>({
+    resolver: zodResolver(SigninFormSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof SigninFormSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {
@@ -82,7 +82,7 @@ export default function SigninForm() {
                         <Input
                           disabled={isPending}
                           {...field}
-                          placeholder="email"
+                          placeholder="Email"
                           type="text"
                         />
                       </FormControl>
@@ -102,7 +102,7 @@ export default function SigninForm() {
                         <Input
                           disabled={isPending}
                           {...field}
-                          placeholder="password"
+                          placeholder="Password"
                           type="password"
                         />
                       </FormControl>
