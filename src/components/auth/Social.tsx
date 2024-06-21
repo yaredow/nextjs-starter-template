@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 
 export default function Social() {
   const handleSocialClick = async (provider: string) => {
-    await signIn(provider, { callbackUrl: "/account" });
+    await signIn(provider, { callbackUrl: "/" });
   };
 
   return (

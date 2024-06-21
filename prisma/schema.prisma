@@ -27,7 +27,7 @@ model Account {
 }
 
 model PasswordResetToken {
-  id      String   @id
+  id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
@@ -52,7 +52,7 @@ model User {
 }
 
 model VerificationToken {
-  id      String   @id
+  id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
