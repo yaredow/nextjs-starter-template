@@ -7,6 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id                    String                 @id @default(cuid())
+  name                  String?
+  email                 String                 @unique
+  emailVerified         DateTime?
+  password              String?
+  image                 String?
+  role                  UserRole               @default(USER)
+  accounts              Account[]
+  isTwoFactorEnabled    Boolean                @default(false)
+  // Optional for WebAuthn support
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  TwoFactorConfirmation TwoFactorConfirmation?
+}
+
 model Account {
   userId            String
   type              String
@@ -19,9 +40,11 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime
-  User              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -35,22 +58,6 @@ model PasswordResetToken {
   @@unique([email, token])
 }
 
-model User {
-  id                    String                 @id @default(cuid())
-  name                  String?
-  email                 String                 @unique
-  emailVerified         DateTime?
-  image                 String?
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  isTwoFactorEnabled    Boolean                @default(false)
-  password              String?
-  role                  UserRole               @default(USER)
-  userName              String?                @default("")
-  Account               Account[]
-  TwoFactorConfirmation TwoFactorConfirmation?
-}
-
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
@@ -58,11 +65,6 @@ model VerificationToken {
   expires DateTime
 
   @@unique([email, token])
-}
-
-enum UserRole {
-  ADMIN
-  USER
 }
 
 model TwoFactorToken {
