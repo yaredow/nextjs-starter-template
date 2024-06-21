@@ -15,6 +15,11 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
 - **dotenv**: Easy management of environment variables.
 
+### Obtaining API Keys
+
+- **Google**: [Generate your Google Auth ID and Auth Secret here](https://console.cloud.google.com).
+- **Facebook**: [Get your Facebook Auth ID and Auth Secret here](https://developers.facebook.com).
+- **Resend**: [Get your Resend key here](https://resend.com).
 
 ## Getting Started
 
