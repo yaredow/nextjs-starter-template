@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import prisma from "@/lib/prisma";
+import prisma from "@/utils/db/db";
 import { SigninFormSchema } from "@/lib/schema";
 
 export default {

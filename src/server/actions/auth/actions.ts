@@ -2,7 +2,7 @@
 
 import { auth, signIn } from "@/auth";
 import { getUserByEmail, getUserById } from "@/data/user";
-import prisma from "@/lib/prisma";
+import prisma from "@/utils/db/db";
 import {
   generatePasswordResetToken,
   generateTwoFactorConfirmationToken,
