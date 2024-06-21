@@ -1,5 +1,7 @@
+import Spinner from "@/components/Spinner";
 import CardWrapper from "@/components/auth/CardWrapper";
 import SigninForm from "@/components/form/signin-form";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Sign In",
@@ -15,7 +17,9 @@ export default function Page() {
       showSocial={true}
       isLogin={true}
     >
-      <SigninForm />
+      <Suspense fallback={<Spinner />}>
+        <SigninForm />
+      </Suspense>
     </CardWrapper>
   );
 }
