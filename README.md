@@ -15,7 +15,6 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
 - **dotenv**: Easy management of environment variables.
 
-
 ## Getting Started
 
 Clone the repository and start building your application with confidence!
@@ -57,13 +56,20 @@ npm install
 
 5. Open the `.env` and `.env.local` files and replace the placeholder values with your actual environment variable values.
 
-6. Run the development server:
+6. To generate AUTH_SECRET you can use the following openssl command, which should be available on all Linux / Mac OS X systems.
+
+```
+openssl rand -base64 33
+
+```
+
+7. Run the development server:
 
    ```
    npm run dev
    ```
 
-7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+8. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Running Tests
 
