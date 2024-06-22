@@ -15,30 +15,34 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
 - **dotenv**: Easy management of environment variables.
 
+### Obtaining API Keys
+
+- **Google**: [Generate your Google Auth ID and Auth Secret here](https://console.cloud.google.com).
+- **Facebook**: [Get your Facebook Auth ID and Auth Secret here](https://developers.facebook.com).
+- **Resend**: [Get your Resend key here](https://resend.com).
+
 ## Getting Started
 
 Clone the repository and start building your application with confidence!
 
-```sh
+```
 git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
 ```
 
-````
-
 ### Usage
 
 1. Clone the repository:
 
-   ```
+   ```sh
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
    ```
 
 2. Install dependencies:
 
-   ```
+   ```sh
    npm install
    ```
 
@@ -118,5 +122,3 @@ This project is licensed under the MIT License.
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
-
-````
