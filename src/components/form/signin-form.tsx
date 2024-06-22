@@ -140,9 +140,7 @@ export default function SigninForm() {
 
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button type="submit" data-testId="Submit">
-            Submit
-          </Button>
+          <SubmitButton isPending={isPending} />
         </div>
       </form>
     </Form>
