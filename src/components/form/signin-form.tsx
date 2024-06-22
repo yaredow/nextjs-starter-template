@@ -18,6 +18,7 @@ import { useSearchParams } from "next/navigation";
 import { authenticate } from "@/server/actions/auth/actions";
 import { FormError } from "../FormError";
 import { SigninFormSchema } from "@/lib/schema";
+import { Button } from "../ui/button";
 
 export default function SigninForm() {
   const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
@@ -80,6 +81,7 @@ export default function SigninForm() {
                     <FormItem>
                       <FormControl>
                         <Input
+                          data-testId="email"
                           disabled={isPending}
                           {...field}
                           placeholder="Email"
@@ -100,6 +102,7 @@ export default function SigninForm() {
                     <FormItem>
                       <FormControl>
                         <Input
+                          data-testId="password"
                           disabled={isPending}
                           {...field}
                           placeholder="Password"
@@ -137,7 +140,9 @@ export default function SigninForm() {
 
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <SubmitButton showTwoFactor={true} isPending={isPending} />
+          <Button type="submit" data-testId="Submit">
+            Submit
+          </Button>
         </div>
       </form>
     </Form>
