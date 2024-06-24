@@ -10,7 +10,19 @@ export const navLinks = [
     title: "About",
   },
   {
+    src: "/breeds",
+    title: "Breeds",
+  },
+  {
+    src: "/my-dogs",
+    title: "MyDogs",
+  },
+  {
+    src: "/donate",
+    title: "Donate",
+  },
+  {
     src: "/contact-us",
-    title: "Contact Us",
+    title: "Contact",
   },
 ];
