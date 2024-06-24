@@ -60,7 +60,7 @@ export default function ContactUsForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex items-center justify-center gap-6"
       >
-        <div className="mx-auto flex flex-col space-y-6">
+        <div className="flex flex-col space-y-6">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/2">
               <FormField
