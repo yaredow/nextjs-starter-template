@@ -28,6 +28,7 @@ git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
 ```
+````
 
 ## Usage
 
@@ -114,9 +115,6 @@ This project is licensed under the MIT License.
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-This version should properly format all the commands and code blocks.
-
 ```
 
 ```
-````
