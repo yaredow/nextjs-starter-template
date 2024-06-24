@@ -1,6 +1,5 @@
-Here's the updated `README.md` with the proper formatting for commands and code blocks:
 
-````markdown
+
 # nextjs-starter-template
 
 A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, Auth.js, Prisma ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
@@ -117,4 +116,4 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ```
 
-```
+
