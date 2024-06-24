@@ -1,5 +1,3 @@
-
-
 # nextjs-starter-template
 
 A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, Auth.js, Prisma ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
@@ -29,7 +27,7 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 
 Clone the repository and start building your application with confidence!
 
-```sh
+
 git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
@@ -40,26 +38,26 @@ npm install
 
 1. Clone the repository:
 
-   ```sh
+   ```
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
    ```
 
 2. Install dependencies:
 
-   ```sh
+   ```
    npm install
    ```
 
 3. Create a `.env` file by copying the `.env.example` file:
 
-   ```sh
+   ```
    cp .env.example .env
    ```
 
 4. Create a `.env.local` file by copying the `.env.local.example` file:
 
-   ```sh
+   ```
    cp .env.local.example .env.local
    ```
 
@@ -67,7 +65,7 @@ npm install
 
 6. Run the development server:
 
-   ```sh
+   ```
    npm run dev
    ```
 
@@ -79,7 +77,7 @@ npm install
 
   To run Cypress end-to-end tests, use the following command:
 
-  ```sh
+  ```
   npm run cypress
   ```
 
@@ -87,7 +85,7 @@ npm install
 
   To run Jest unit tests, use the following command:
 
-  ```sh
+  ```
   npm run test
   ```
 
@@ -95,7 +93,7 @@ npm install
 
 To start the React Email development server, use the following command:
 
-```sh
+```
 npm run email:dev
 ```
 
@@ -103,7 +101,7 @@ npm run email:dev
 
 This project uses [Husky](https://github.com/typicode/husky) to manage Git hooks. When you commit a change, Husky runs the following commands automatically:
 
-```sh
+```
 npm run format:fix && npm run lint && npm test
 ```
 
