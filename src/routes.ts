@@ -1,6 +1,6 @@
 export const publicRoutes = [
   "/",
-  "/contact",
+  "/contact-us",
   "/auth/new-verification",
   "/api/stripe/webhook",
 ];
