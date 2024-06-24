@@ -1,124 +1,114 @@
-# nextjs-starter-template
 
-A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, Auth.js, Prisma ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
+---
+
+# Buchi 🐾
+
+Buchi is a comprehensive website dedicated to providing detailed information about various dog breeds. Whether you're looking to adopt a new furry friend or learn more about your current companion, Buchi has you covered. Explore breed characteristics, care tips, and more to ensure you and your dog live happily ever after.
+
+## Table of Contents
+
+- [Buchi 🐾](#buchi-)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Features
 
-- **TypeScript**: Strongly-typed language for better code quality and developer experience.
-- **Next.js**: Powerful React framework with server-side rendering.
-- **Jest**: Comprehensive unit and integration testing setup.
-- **Cypress**: End-to-end testing for simulating real user interactions.
-- **Auth.js**: Secure and easy-to-use authentication.
-- **Prisma ORM**: Advanced ORM for seamless database management and querying.
-- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
-- **ESLint and Prettier**: Ensuring code quality and consistency.
-- **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
-- **dotenv**: Easy management of environment variables.
+- Detailed information on various dog breeds
+- Adoption tips and care guides
+- User-friendly and responsive design
 
-### Obtaining API Keys
+## Tech Stack
 
-- **Google**: [Generate your Google Auth ID and Auth Secret here](https://console.cloud.google.com).
-- **Facebook**: [Get your Facebook Auth ID and Auth Secret here](https://developers.facebook.com).
-- **Resend**: [Get your Resend key here](https://resend.com).
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **CSS**: [Tailwind CSS](https://tailwindcss.com/)
+- **Database**: [Prisma](https://www.prisma.io/) with [Neon DB](https://neon.tech/)
 
 ## Getting Started
 
-Clone the repository and start building your application with confidence!
+To get a local copy up and running follow these simple steps.
 
-```
-git clone https://github.com/your-username/nextjs-starter-template.git
-cd nextjs-starter-template
-npm install
-```
+### Prerequisites
 
-### Usage
+Make sure you have the following installed on your local machine:
 
-1. Clone the repository:
+- [Node.js](https://nodejs.org/en/)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. Clone the repo:
 
    ```sh
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/yourusername/buchi.git
    ```
 
-2. Install dependencies:
+2. Navigate to the project directory:
+
+   ```sh
+   cd buchi
+   ```
+
+3. Install dependencies:
 
    ```sh
    npm install
    ```
 
-3. Create a `.env` file by copying the `.env.example` file:
+   or
 
-   ```
-   cp .env.example .env
-   ```
-
-4. Create a `.env.local` file by copying the `.env.local.example` file:
-
-   ```
-   cp .env.local.example .env.local
+   ```sh
+   yarn install
    ```
 
-5. Open the `.env` and `.env.local` files and replace the placeholder values with your actual environment variable values.
+4. Set up environment variables:
 
-6. To generate AUTH_SECRET you can use the following openssl command, which should be available on all Linux / Mac OS X systems.
+   Create a `.env` file in the root directory and add your Prisma database URL.
 
-```
-openssl rand -base64 33
-
-```
-
-7. Run the development server:
-
-   ```
-   npm run dev
+   ```env
+   DATABASE_URL="your_neon_db_url"
    ```
 
-8. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Run database migrations:
 
-## Running Tests
+   ```sh
+   npx prisma migrate dev
+   ```
 
-- **End-to-End Tests (Cypress)**:
+### Usage
 
-  To run Cypress end-to-end tests, use the following command:
+To start the development server, run:
 
-  ```
-  npm run cypress
-  ```
-
-- **Unit Tests (Jest)**:
-
-  To run Jest unit tests, use the following command:
-
-  ```
-  npm run test
-  ```
-
-## Running React Email in Development
-
-To start the React Email development server, use the following command:
-
-```
-npm run email:dev
+```sh
+npm run dev
 ```
 
-## Pre-commit Hook
+or
 
-This project uses [Husky](https://github.com/typicode/husky) to manage Git hooks. When you commit a change, Husky runs the following commands automatically:
-
-```
-npm run format:fix && npm run lint && npm test
+```sh
+yarn dev
 ```
 
-- `npm run format:fix`: This command formats your code using a formatter (e.g., Prettier).
-- `npm run lint`: This command runs the linter to check for code quality issues.
-- `npm test`: This command runs the test suite to ensure that your changes do not break existing functionality.
-
-These commands help maintain code quality and consistency across the project.
-
-## License
-
-This project is licensed under the MIT License.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
