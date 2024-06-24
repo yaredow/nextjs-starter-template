@@ -27,7 +27,7 @@ export default function ContactUsEmail({
   return (
     <Html>
       <Head />
-      <Preview>Thank you for contacting Konjo Habesha Fashion</Preview>
+      <Preview>Thank you for contacting your app name</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="items-center rounded-lg border border-gray-300 p-4 shadow-lg">
@@ -35,12 +35,12 @@ export default function ContactUsEmail({
               src="https://res.cloudinary.com/diqgie9yt/image/upload/v1716035067/konjo-habesha/logo_ktkdhl.png"
               width="50"
               height="50"
-              alt="Konjo Habesha Fashion Logo"
+              alt="your app name Logo"
               className="mx-auto flex items-center justify-center"
             />
             <Text className="text-lg">Dear {firstName},</Text>
             <Text className="text-normal">
-              Thank you for reaching out to us at Konjo Habesha Fashion. We have
+              Thank you for reaching out to us at your app name. We have
               received your message and one of our team members will get back to
               you as soon as possible. Below is a copy of your message for your
               reference:
@@ -57,12 +57,10 @@ export default function ContactUsEmail({
             <Text className="text-lg">
               Best regards,
               <br />
-              The Konjo Habesha Team
+              The your app name Team
             </Text>
             <Hr className="border-2" />
-            <Text className="text-normal bg-background/20">
-              Addis Ababa, Shiromeda
-            </Text>
+            <Text className="text-normal bg-background/20">your location</Text>
           </Container>
         </Body>
       </Tailwind>

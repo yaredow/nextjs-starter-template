@@ -25,7 +25,7 @@ export default function VerificationEmail({
   return (
     <Html>
       <Head />
-      <Preview>Verify your email for Konjo Habesha Fashion</Preview>
+      <Preview>Verify your email for your app name</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="items-center rounded-lg border border-gray-300 p-4 shadow-lg">
@@ -38,10 +38,9 @@ export default function VerificationEmail({
             />
             <Text className="text-lg">Dear {firstName},</Text>
             <Text className="text-normal">
-              Thank you for signing up with Konjo Habesha Fashion! To complete
-              your registration, please verify your email address by clicking
-              the button below. This helps us ensure the security of your
-              account.
+              Thank you for signing up with your app name! To complete your
+              registration, please verify your email address by clicking the
+              button below. This helps us ensure the security of your account.
             </Text>
             <Section className="text-center">
               <Button
@@ -57,7 +56,7 @@ export default function VerificationEmail({
             <Text className="text-lg">
               Best regards,
               <br />
-              The Konjo Habesha Team
+              The your app name Team
             </Text>
             <Hr className="border-2" />
             <Text className="text-normal bg-background/20">

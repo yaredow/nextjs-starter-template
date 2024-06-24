@@ -23,7 +23,7 @@ export default function WelcomeEmail({ firstName }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to Konjo Habesha Fashion</Preview>
+      <Preview>Welcome to your app name</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="items-center rounded-lg border border-gray-300 p-4 shadow-lg">
@@ -31,17 +31,17 @@ export default function WelcomeEmail({ firstName }: WelcomeEmailProps) {
               src="https://res.cloudinary.com/diqgie9yt/image/upload/v1716035067/konjo-habesha/logo_ktkdhl.png"
               width="50"
               height="50"
-              alt="Konjo Habesha Fashion Logo"
+              alt="your app name Logo"
               className="mx-auto flex items-center justify-center"
             />
             <Text className="text-lg">Dear {firstName},</Text>
             <Text className="text-normal">
-              Welcome to Konjo Habesha Fashion! We are delighted to have you
-              with us. Our online store offers a unique collection of
-              traditional Habesha garments, each piece reflecting the rich
-              cultural heritage, beauty, and resilience of our people. We invite
-              you to explore our collection, discover the stories behind each
-              garment, and connect with your roots through our authentic pieces.
+              Welcome to your app name! We are delighted to have you with us.
+              Our online store offers a unique collection of traditional Habesha
+              garments, each piece reflecting the rich cultural heritage,
+              beauty, and resilience of our people. We invite you to explore our
+              collection, discover the stories behind each garment, and connect
+              with your roots through our authentic pieces.
             </Text>
             <Section className="text-center">
               <Button
@@ -54,12 +54,10 @@ export default function WelcomeEmail({ firstName }: WelcomeEmailProps) {
             <Text className="text-lg">
               Best regards,
               <br />
-              The Konjo Habesha Team
+              The your app name Team
             </Text>
             <Hr className="border-2" />
-            <Text className="text-normal bg-background/20">
-              Addis Ababa, Shiromeda
-            </Text>
+            <Text className="text-normal bg-background/20">your location</Text>
           </Container>
         </Body>
       </Tailwind>

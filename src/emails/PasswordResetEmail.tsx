@@ -25,7 +25,7 @@ export default function PasswordResetEmail({
   return (
     <Html>
       <Head />
-      <Preview>Reset your password for Konjo Habesha Fashion</Preview>
+      <Preview>Reset your password for your app name</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="items-center rounded-lg border border-gray-300 p-4 shadow-lg">
@@ -62,9 +62,7 @@ export default function PasswordResetEmail({
               The Konjo Habesha Team
             </Text>
             <Hr className="border-2" />
-            <Text className="text-normal bg-background/20">
-              Addis Ababa, Shiromeda
-            </Text>
+            <Text className="text-normal bg-background/20">your location</Text>
           </Container>
         </Body>
       </Tailwind>

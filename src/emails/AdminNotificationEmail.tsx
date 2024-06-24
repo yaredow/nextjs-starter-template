@@ -65,9 +65,7 @@ export default function AdminNotificationEmail({
               Your Website Team
             </Text>
             <Hr className="mt-4 border-2" />
-            <Text className="text-normal bg-background/20">
-              Addis Ababa, Shiromeda
-            </Text>
+            <Text className="text-normal bg-background/20">Your location</Text>
           </Container>
         </Body>
       </Tailwind>
