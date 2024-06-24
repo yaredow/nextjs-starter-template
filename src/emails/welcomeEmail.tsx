@@ -35,14 +35,7 @@ export default function WelcomeEmail({ firstName }: WelcomeEmailProps) {
               className="mx-auto flex items-center justify-center"
             />
             <Text className="text-lg">Dear {firstName},</Text>
-            <Text className="text-normal">
-              Welcome to your app name! We are delighted to have you with us.
-              Our online store offers a unique collection of traditional Habesha
-              garments, each piece reflecting the rich cultural heritage,
-              beauty, and resilience of our people. We invite you to explore our
-              collection, discover the stories behind each garment, and connect
-              with your roots through our authentic pieces.
-            </Text>
+            <Text className="text-normal">Add a welcome message here</Text>
             <Section className="text-center">
               <Button
                 className="rounded-md bg-blue-500 px-4 py-[10px] text-white"
