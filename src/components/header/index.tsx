@@ -8,18 +8,12 @@ import NavLink from "@/components/header/nav-link";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserMenu from "@/components/user-menu";
-import Link from "next/link";
-import Image from "next/image";
-import Logo from "@/../public/images/logo.png";
 
 export default async function Header() {
   return (
     <header className="text-secondary-body sticky inset-0 inset-y-0 right-0 z-10 w-full border-b bg-background px-4 py-3 dark:text-white md:px-12">
       <nav className="flex items-center justify-between">
-        <Link href="/" className="flex items-center justify-center gap-2">
-          <Image src={Logo} height={50} width={50} alt="A dog image"></Image>
-          <span className="text-xl font-semibold">Buchi</span>
-        </Link>
+        Logo
         <div className="flex flex-row gap-8">
           <div className="hidden md:flex">
             <ul className="font-main flex gap-[1.2rem]">

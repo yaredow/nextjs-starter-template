@@ -1,5 +1,3 @@
-import { title } from "process";
-
 export const navLinks = [
   {
     src: "/",
@@ -10,19 +8,7 @@ export const navLinks = [
     title: "About",
   },
   {
-    src: "/breeds",
-    title: "Breeds",
-  },
-  {
-    src: "/my-dogs",
-    title: "MyDogs",
-  },
-  {
-    src: "/donate",
-    title: "Donate",
-  },
-  {
     src: "/contact-us",
-    title: "Contact",
+    title: "Contact Us",
   },
 ];

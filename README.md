@@ -1,112 +1,122 @@
----
+Here's the updated `README.md` with the proper formatting for commands and code blocks:
 
-# Buchi 🐾
+````markdown
+# nextjs-starter-template
 
-Buchi is a comprehensive website dedicated to providing detailed information about various dog breeds. Whether you're looking to adopt a new furry friend or learn more about your current companion, Buchi has you covered. Explore breed characteristics, care tips, and more to ensure you and your dog live happily ever after.
-
-## Table of Contents
-
-- [Buchi 🐾](#buchi-)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Tech Stack](#tech-stack)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Usage](#usage)
-  - [Contributing](#contributing)
-  - [License](#license)
+A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, Auth.js, Prisma ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
 
 ## Features
 
-- Detailed information on various dog breeds
-- Adoption tips and care guides
-- User-friendly and responsive design
-
-## Tech Stack
-
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **CSS**: [Tailwind CSS](https://tailwindcss.com/)
-- **Database**: [Prisma](https://www.prisma.io/) with [Neon DB](https://neon.tech/)
+- **TypeScript**: Strongly-typed language for better code quality and developer experience.
+- **Next.js**: Powerful React framework with server-side rendering.
+- **Jest**: Comprehensive unit and integration testing setup.
+- **Cypress**: End-to-end testing for simulating real user interactions.
+- **Auth.js**: Secure and easy-to-use authentication.
+- **Prisma ORM**: Advanced ORM for seamless database management and querying.
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
+- **ESLint and Prettier**: Ensuring code quality and consistency.
+- **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
+- **dotenv**: Easy management of environment variables.
+- **next-seo** and **next-sitemap**: SEO and sitemap management for better search engine visibility.
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+Clone the repository and start building your application with confidence!
 
-### Prerequisites
+```sh
+git clone https://github.com/your-username/nextjs-starter-template.git
+cd nextjs-starter-template
+npm install
+```
 
-Make sure you have the following installed on your local machine:
+## Usage
 
-- [Node.js](https://nodejs.org/en/)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-
-### Installation
-
-1. Clone the repo:
-
-   ```sh
-   git clone https://github.com/yourusername/buchi.git
-   ```
-
-2. Navigate to the project directory:
+1. Clone the repository:
 
    ```sh
-   cd buchi
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
    ```
 
-3. Install dependencies:
+2. Install dependencies:
 
    ```sh
    npm install
    ```
 
-   or
+3. Create a `.env` file by copying the `.env.example` file:
 
    ```sh
-   yarn install
+   cp .env.example .env
    ```
 
-4. Set up environment variables:
-
-   Create a `.env` file in the root directory and add your Prisma database URL.
-
-   ```env
-   DATABASE_URL="your_neon_db_url"
-   ```
-
-5. Run database migrations:
+4. Create a `.env.local` file by copying the `.env.local.example` file:
 
    ```sh
-   npx prisma migrate dev
+   cp .env.local.example .env.local
    ```
 
-### Usage
+5. Open the `.env` and `.env.local` files and replace the placeholder values with your actual environment variable values.
 
-To start the development server, run:
+6. Run the development server:
+
+   ```sh
+   npm run dev
+   ```
+
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Running Tests
+
+- **End-to-End Tests (Cypress)**:
+
+  To run Cypress end-to-end tests, use the following command:
+
+  ```sh
+  npm run cypress
+  ```
+
+- **Unit Tests (Jest)**:
+
+  To run Jest unit tests, use the following command:
+
+  ```sh
+  npm run test
+  ```
+
+## Running React Email in Development
+
+To start the React Email development server, use the following command:
 
 ```sh
-npm run dev
+npm run email:dev
 ```
 
-or
+## Pre-commit Hook
+
+This project uses [Husky](https://github.com/typicode/husky) to manage Git hooks. When you commit a change, Husky runs the following commands automatically:
 
 ```sh
-yarn dev
+npm run format:fix && npm run lint && npm test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `npm run format:fix`: This command formats your code using a formatter (e.g., Prettier).
+- `npm run lint`: This command runs the linter to check for code quality issues.
+- `npm test`: This command runs the test suite to ensure that your changes do not break existing functionality.
 
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+These commands help maintain code quality and consistency across the project.
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+This project is licensed under the MIT License.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+This version should properly format all the commands and code blocks.
+
+```
+
+```
+````
