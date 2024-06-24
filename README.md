@@ -20,6 +20,13 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 
 ## Getting Started
 
+### Obtaining API Keys
+
+- **Auth Google keys**: [Generate your Google auth API key here](console.cloud.google.com).
+- **Auth Facebook keys**: [Get your Facebook auth API key here](developers.facebook.com).
+- **Resend key**: [Get your Stripe API key here](resend.com).
+  
+
 Clone the repository and start building your application with confidence!
 
 ```sh
