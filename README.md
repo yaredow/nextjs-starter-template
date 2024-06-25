@@ -14,35 +14,38 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **ESLint and Prettier**: Ensuring code quality and consistency.
 - **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
 - **dotenv**: Easy management of environment variables.
-
-### Obtaining API Keys
-
-- **Google**: [Generate your Google Auth ID and Auth Secret here](https://console.cloud.google.com).
-- **Facebook**: [Get your Facebook Auth ID and Auth Secret here](https://developers.facebook.com).
-- **Resend**: [Get your Resend key here](https://resend.com).
+- **next-seo** and **next-sitemap**: SEO and sitemap management for better search engine visibility.
 
 ## Getting Started
 
+### Obtaining API Keys
+
+- **Auth Google keys**: [Generate your Google auth API key here](console.cloud.google.com).
+- **Auth Facebook keys**: [Get your Facebook auth API key here](developers.facebook.com).
+- **Resend key**: [Get your Stripe Resend key here](resend.com).
+  
+
 Clone the repository and start building your application with confidence!
 
-```
+
 git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
 ```
+````
 
-### Usage
+## Usage
 
 1. Clone the repository:
 
-   ```sh
+   ```
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
    ```
 
 2. Install dependencies:
 
-   ```sh
+   ```
    npm install
    ```
 
@@ -60,20 +63,13 @@ npm install
 
 5. Open the `.env` and `.env.local` files and replace the placeholder values with your actual environment variable values.
 
-6. To generate AUTH_SECRET you can use the following openssl command, which should be available on all Linux / Mac OS X systems.
-
-```
-openssl rand -base64 33
-
-```
-
-7. Run the development server:
+6. Run the development server:
 
    ```
    npm run dev
    ```
 
-8. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Running Tests
 
@@ -122,3 +118,7 @@ This project is licensed under the MIT License.
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
+
+```
+
+
