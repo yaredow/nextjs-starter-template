@@ -23,16 +23,16 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 - **Auth Google keys**: [Generate your Google auth API key here](console.cloud.google.com).
 - **Auth Facebook keys**: [Get your Facebook auth API key here](developers.facebook.com).
 - **Resend key**: [Get your Stripe Resend key here](resend.com).
-  
 
 Clone the repository and start building your application with confidence!
-
 
 git clone https://github.com/your-username/nextjs-starter-template.git
 cd nextjs-starter-template
 npm install
+
 ```
-````
+
+```
 
 ## Usage
 
@@ -122,3 +122,4 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ```
 
 
+```
