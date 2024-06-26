@@ -363,7 +363,7 @@ export async function updateUserData(
       },
     });
 
-    revalidatePath("/");
+    revalidatePath("/profile/setting");
 
     return { success: "User account updated successfully" };
   } catch (err) {
