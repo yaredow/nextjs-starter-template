@@ -1,3 +1,9 @@
+import Heros from "@/components/landing-page/hero";
+
 export default function Home() {
-  return <main>Buchi</main>;
+  return (
+    <div>
+      <Heros />
+    </div>
+  );
 }
