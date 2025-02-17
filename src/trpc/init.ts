@@ -1,6 +1,10 @@
+import { db } from "@/db";
+import { user } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+import { eq, lt } from "drizzle-orm";
 import { headers } from "next/headers";
+import { log } from "node:console";
 import { cache } from "react";
 import superjson from "superjson";
 
@@ -27,3 +31,29 @@ const t = initTRPC.context<Context>().create({
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const baseProcedure = t.procedure;
+export const protectedProcedure = t.procedure.use(
+  async function isAuthed(opts) {
+    const { ctx } = opts;
+
+    if (!ctx.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const [loggedInUser] = await db
+      .select()
+      .from(user)
+      .where(eq(user.id, ctx.userId))
+      .limit(1);
+
+    if (!loggedInUser) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    return opts.next({
+      ctx: {
+        ...ctx,
+        user: loggedInUser,
+      },
+    });
+  },
+);
