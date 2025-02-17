@@ -34,6 +34,8 @@ export default async function Header() {
               <UserMenu />
             </div>
           </div>
+
+
         </div>
         {/* Mobile navigation */}
         <div className="cursor-pointer text-black dark:text-white md:hidden">
@@ -53,6 +55,7 @@ export default async function Header() {
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
+
               </div>
 
               <hr className="mt-6 w-full flex-grow" />
