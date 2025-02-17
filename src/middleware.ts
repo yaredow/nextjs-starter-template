@@ -1,18 +1,22 @@
-import authConfig from "./auth.config";
-import NextAuth from "next-auth";
+import { betterFetch } from "@better-fetch/fetch";
+
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
   publicRoutes,
   authRoutes,
 } from "@/routes";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-const { auth } = NextAuth(authConfig);
+export default async function middleware(request: NextRequest) {
+  const { data: session } = await betterFetch("/api/auth/get-session", {
+    headers: {
+      cookie: request.headers.get("cookie") || "",
+    },
+  });
 
-export default auth((req) => {
-  const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+  const isLoggedIn = !!session;
+  const { nextUrl } = request;
 
   const isApiAuthRoute = apiAuthPrefix.some((apiPrefix) =>
     nextUrl.pathname.startsWith(apiPrefix),
@@ -44,7 +48,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],

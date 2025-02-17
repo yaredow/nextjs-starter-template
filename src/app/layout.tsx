@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from "nextjs-toploader";
 import QueryProviders from "@/components/providers/query-provider";
 import StoreProvider from "@/components/providers/store-provider";
+import { TRPCProvider } from "@/trpc/client";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,16 +33,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <QueryProviders>
-            <AuthProvider>
-              <StoreProvider>
-                <NextTopLoader />
-                <Header />
-                <div className="m-12">{children}</div>
-                <Toaster />
-              </StoreProvider>
-            </AuthProvider>
-          </QueryProviders>
+          <TRPCProvider>
+            <NextTopLoader />
+            <Header />
+            <div className="m-12">{children}</div>
+            <Toaster />
+          </TRPCProvider>
         </ThemeProvider>
       </body>
     </html>
