@@ -1,12 +1,13 @@
-import { db } from "@/db";
+import { headers } from "next/headers";
+import { eq, lt } from "drizzle-orm";
+import superjson from "superjson";
+import { cache } from "react";
+
+import { initTRPC, TRPCError } from "@trpc/server";
+import { ratelimit } from "@/lib/ratelimit";
 import { user } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { initTRPC, TRPCError } from "@trpc/server";
-import { eq, lt } from "drizzle-orm";
-import { headers } from "next/headers";
-import { log } from "node:console";
-import { cache } from "react";
-import superjson from "superjson";
+import { db } from "@/db";
 
 export const createTRPCContext = cache(async () => {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -47,6 +48,12 @@ export const protectedProcedure = t.procedure.use(
 
     if (!loggedInUser) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const { success } = await ratelimit.limit(loggedInUser.id);
+
+    if (!success) {
+      throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
     }
 
     return opts.next({
