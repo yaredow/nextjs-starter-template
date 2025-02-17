@@ -1,3 +1,4 @@
+import { createSelectSchema } from "drizzle-zod";
 import { create } from "domain";
 import {
   pgTable,
@@ -6,7 +7,6 @@ import {
   timestamp,
   boolean,
 } from "drizzle-orm/pg-core";
-import { createSelectSchema } from "drizzle-zod";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),

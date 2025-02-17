@@ -15,8 +15,6 @@ import { Input } from "../ui/input";
 import { useState, useTransition } from "react";
 import { FormSuccess } from "../FormSuccess";
 import { FormError } from "../FormError";
-import { forgotPasswordAction } from "@/server/actions/auth/actions";
-import { forgotPasswordFormSchema } from "@/lib/schema";
 
 export default function ForgetPasswordForm() {
   const [error, setError] = useState<string | undefined>("");
@@ -29,21 +27,7 @@ export default function ForgetPasswordForm() {
     },
   });
 
-  const onSubmit = (value: z.infer<typeof forgotPasswordFormSchema>) => {
-    setError("");
-    setSuccess("");
-    startTransition(async () => {
-      await forgotPasswordAction(value)
-        .then((data) => {
-          setSuccess(data.success);
-          setError(data.error);
-        })
-        .catch((error) => {
-          console.error(error);
-          setError("Something went wrong");
-        });
-    });
-  };
+  const onSubmit = (value: z.infer<typeof forgotPasswordFormSchema>) => {};
 
   return (
     <Form {...form}>

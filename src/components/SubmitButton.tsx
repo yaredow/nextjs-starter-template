@@ -1,6 +1,6 @@
 "use client";
 
-import PulsatingDots from "@/components/PulsatingDots";
+import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 
 type SubmitButtonProps = {
@@ -14,7 +14,13 @@ export default function SubmitButton({
 }: SubmitButtonProps) {
   return (
     <Button disabled={isPending} type="submit">
-      {isPending ? <PulsatingDots /> : !showTwoFactor ? "Confirm" : "Submit"}
+      {isPending ? (
+        <Loader2 className="mx-auto flex min-h-screen animate-pulse items-center justify-center" />
+      ) : !showTwoFactor ? (
+        "Confirm"
+      ) : (
+        "Submit"
+      )}
     </Button>
   );
 }

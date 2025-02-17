@@ -12,18 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FormSuccess } from "../FormSuccess";
-import { FormError } from "../FormError";
 import SubmitButton from "../SubmitButton";
-import { useState, useTransition } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { contactUsAction } from "@/server/actions/contact-us/actions";
+import { useState } from "react";
+import { initializeTraceState } from "next/dist/trace";
 
 export default function ContactUsForm() {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
-
+  const isPending = false;
   const form = useForm<z.infer<typeof ContactUsFromSchema>>({
     resolver: zodResolver(ContactUsFromSchema),
     defaultValues: {
@@ -34,25 +29,7 @@ export default function ContactUsForm() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ContactUsFromSchema>) => {
-    setError("");
-    setSuccess("");
-    startTransition(() => {
-      contactUsAction(values)
-        .then((data) => {
-          if (data.success) {
-            setSuccess(data.success);
-            form.reset();
-          } else {
-            setError(data.error);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          setError("Something went wrong");
-        });
-    });
-  };
+  const onSubmit = (values: z.infer<typeof ContactUsFromSchema>) => {};
 
   return (
     <Form {...form}>
@@ -129,8 +106,6 @@ export default function ContactUsForm() {
             )}
           />
 
-          <FormSuccess message={success} />
-          <FormError message={error} />
           <SubmitButton isPending={isPending} />
         </div>
       </form>

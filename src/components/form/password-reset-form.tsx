@@ -17,8 +17,6 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { FormSuccess } from "../FormSuccess";
 import { FormError } from "../FormError";
-import { resetPasswordAction } from "@/server/actions/auth/actions";
-import { ResetPasswordFormSchema } from "@/lib/schema";
 
 export default function PasswordResetForm() {
   const [error, setError] = useState<string | undefined>("");
@@ -35,21 +33,9 @@ export default function PasswordResetForm() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof ResetPasswordFormSchema>) => {
-    setError("");
-    setSuccess("");
-    startTransition(() => {
-      resetPasswordAction(values, token)
-        .then((data) => {
-          setSuccess(data.success);
-          setError(data.error);
-        })
-        .catch((error) => {
-          console.error(error);
-          setError("Something went wrong");
-        });
-    });
-  };
+  const onSubmit = async (
+    values: z.infer<typeof ResetPasswordFormSchema>,
+  ) => {};
 
   return (
     <CardWrapper

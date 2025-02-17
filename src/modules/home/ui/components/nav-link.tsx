@@ -8,7 +8,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "../ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
 
 type NavLinkProps = {
   href: string;

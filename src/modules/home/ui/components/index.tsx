@@ -1,13 +1,21 @@
-import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Button } from "../../../../components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "../../../../components/ui/sheet";
 import { MenuIcon, MoveRight } from "lucide-react";
 
 import React from "react";
 import { navLinks } from "@/lib/constants";
-import NavLink from "@/components/header/nav-link";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import UserMenu from "@/components/user-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../components/ui/avatar";
+import UserMenu from "./user-menu";
+import { ModeToggle } from "./mode-toggle";
+import NavLink from "./nav-link";
 
 export default async function Header() {
   return (

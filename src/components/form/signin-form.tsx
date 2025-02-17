@@ -48,7 +48,6 @@ export default function SigninForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        data-testId="email"
                         disabled={isPending}
                         {...field}
                         placeholder="Email"
@@ -69,7 +68,6 @@ export default function SigninForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        data-testId="password"
                         disabled={isPending}
                         {...field}
                         placeholder="Password"
