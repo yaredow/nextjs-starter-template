@@ -3,11 +3,13 @@
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { Button } from "../ui/button";
-import { signIn } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 
 export default function Social() {
   const handleSocialClick = async (provider: string) => {
-    await signIn(provider, { callbackUrl: "/profile" });
+    await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (

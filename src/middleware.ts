@@ -7,13 +7,20 @@ import {
   authRoutes,
 } from "@/routes";
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "./lib/auth";
+
+type Session = typeof auth.$Infer.Session;
 
 export default async function middleware(request: NextRequest) {
-  const { data: session } = await betterFetch("/api/auth/get-session", {
-    headers: {
-      cookie: request.headers.get("cookie") || "",
+  const { data: session } = await betterFetch<Session>(
+    "/api/auth/get-session",
+    {
+      baseURL: request.nextUrl.origin,
+      headers: {
+        cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
+      },
     },
-  });
+  );
 
   const isLoggedIn = !!session;
   const { nextUrl } = request;

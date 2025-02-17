@@ -1,5 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { UserIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
+import { authClient } from "@/lib/auth-client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,19 +15,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
+
 import { Button } from "./ui/button";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { UserIcon } from "lucide-react";
 
 export default function UserMenu() {
-  const { data: session, status } = useSession();
+  const { data: session } = authClient.useSession();
   const router = useRouter();
 
   const handleLogout = () => {
-    signOut({ callbackUrl: "http://localhost:3000" });
+    authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.replace("/");
+        },
+        onError: (error) => {
+          console.error("Error signing out:", error);
+        },
+      },
+    });
   };
 
   return (
@@ -28,7 +40,7 @@ export default function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           onClick={() => {
-            if (status === "unauthenticated") {
+            if (!session) {
               router.replace("/auth/signin");
             }
           }}
@@ -49,11 +61,9 @@ export default function UserMenu() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      {status === "authenticated" ? (
+      {session ? (
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            {session.user ? session.user?.name : "Your Account"}
-          </DropdownMenuLabel>
+          <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href="/profile">Profile</Link>
