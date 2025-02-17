@@ -1,6 +1,5 @@
 import prisma from "@/utils/db/db";
 
-
 export const getPasswordResetTokenByToken = async (token: string) => {
   try {
     const passwordResetToken = await prisma.passwordResetToken.findUnique({
