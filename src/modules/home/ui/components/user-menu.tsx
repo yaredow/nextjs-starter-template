@@ -40,7 +40,7 @@ export default function UserMenu() {
         <Button
           onClick={() => {
             if (!session) {
-              router.replace("/auth/signin");
+              router.replace("/signin");
             }
           }}
           variant="outline"

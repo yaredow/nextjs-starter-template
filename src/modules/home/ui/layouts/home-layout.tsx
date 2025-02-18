@@ -6,7 +6,7 @@ interface HomeLayoutProps {
 
 const HomeLayout = ({ children }: HomeLayoutProps) => {
   return (
-    <div className="h-full">
+    <div className="h-full w-full">
       <Header />
       {children}
     </div>
