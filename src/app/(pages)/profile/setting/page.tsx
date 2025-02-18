@@ -1,5 +1,8 @@
-import UpdatePasswordForm from "@/components/form/update-password-form";
-import UpdateUserDataForm from "@/components/form/update-user-data-form";
+import { Metadata } from "next";
+
+import UpdatePasswordForm from "@/modules/auth/ui/components/update-password-form";
+import UpdateUserDataForm from "@/modules/auth/ui/components/update-user-data-form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -7,16 +10,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-export const metadata = () => {
-  return {
-    title: "Update Profile",
-  };
+export const metadata: Metadata = {
+  title: "setting",
 };
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session) {
+    redirect("/signin");
+  }
+
   return (
     <div className="mx-auto w-full max-w-md">
       <Tabs defaultValue="profile">
