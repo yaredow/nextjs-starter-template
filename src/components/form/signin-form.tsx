@@ -1,5 +1,20 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { z } from "zod";
+
+import { SignInInput, SignInSchema } from "@/modules/auth/schema";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/hook/use-toast";
+
+import SubmitButton from "../SubmitButton";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+
 import {
   Form,
   FormControl,
@@ -7,30 +22,38 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Input } from "../ui/input";
-import SubmitButton from "../SubmitButton";
-import { FormSuccess } from "../FormSuccess";
-import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
-import { Button } from "../ui/button";
-import { userCreateSchema } from "@/db/schema";
 
 export default function SigninForm() {
-  const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const form = useForm<z.infer<typeof userCreateSchema>>({
-    resolver: zodResolver(userCreateSchema),
+  const form = useForm<SignInInput>({
+    resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof userCreateSchema>) => {};
+  const onSubmit = async (values: SignInInput) => {
+    await authClient.signIn.email(values, {
+      onRequest: (ctx) => {
+        setIsLoading(true);
+      },
+      onResponse: (ctx) => {
+        setIsLoading(false);
+      },
+      onError: (ctx) => {
+        setIsLoading(false);
+        toast({
+          description: "An error occurred while signing in.",
+          variant: "destructive",
+        });
+      },
+      onSuccess: (ctx) => {
+        setIsLoading(false);
+      },
+    });
+  };
 
   return (
     <Form {...form}>
@@ -48,7 +71,7 @@ export default function SigninForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        disabled={isPending}
+                        disabled={isLoading}
                         {...field}
                         placeholder="Email"
                         type="text"
@@ -68,7 +91,7 @@ export default function SigninForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        disabled={isPending}
+                        disabled={isLoading}
                         {...field}
                         placeholder="Password"
                         type="password"
@@ -81,7 +104,7 @@ export default function SigninForm() {
             />
           </>
 
-          <SubmitButton isPending={isPending} />
+          <SubmitButton isPending={isLoading} />
         </div>
       </form>
     </Form>

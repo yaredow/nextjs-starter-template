@@ -13,40 +13,49 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import SubmitButton from "../SubmitButton";
-import { FormSuccess } from "../FormSuccess";
-import { FormError } from "../FormError";
-import { registerAction } from "@/server/actions/auth/actions";
-import { SignupFormSchema } from "@/lib/schema";
+import { FaL } from "react-icons/fa6";
+import { SignUpInput, SignUpSchema } from "@/modules/auth/schema";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/hook/use-toast";
+import { Tv } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const form = useForm<z.infer<typeof SignupFormSchema>>({
-    resolver: zodResolver(SignupFormSchema),
+  const form = useForm<SignUpInput>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      name: "",
       email: "",
       password: "",
-      passwordConfirm: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof SignupFormSchema>) => {
-    setError("");
-    setSuccess("");
-    startTransition(() => {
-      registerAction(values)
-        .then((data) => {
-          setSuccess(data.success);
-          setError(data.error);
-        })
-        .catch((error) => {
-          console.error(error);
-          setError("Something went wrong");
+  const onSubmit = async (values: SignUpInput) => {
+    await authClient.signUp.email(values, {
+      onRequest: () => {
+        setIsLoading(true);
+      },
+      onResponse: () => {
+        setIsLoading(false);
+      },
+      onError: (ctx) => {
+        setIsLoading(false);
+        toast({
+          description: ctx.error.message,
+          variant: "destructive",
         });
+      },
+      onSuccess: (ctx) => {
+        setIsLoading(false);
+        toast({
+          description: "You have successfully signed up!",
+        });
+        router.push("/");
+      },
     });
   };
 
@@ -57,47 +66,25 @@ export default function SignupForm() {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col space-y-6">
-          <div className="flex flex-row gap-2">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        disabled={isPending}
-                        {...field}
-                        placeholder="First Name"
-                        type="text"
-                      />
-                    </FormControl>
-                    <FormMessage className="mx-2" />
-                  </FormItem>
-                );
-              }}
-            />
-
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        disabled={isPending}
-                        {...field}
-                        placeholder="Last Name"
-                        type="text"
-                      />
-                    </FormControl>
-                    <FormMessage className="mx-2" />
-                  </FormItem>
-                );
-              }}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      {...field}
+                      placeholder="First Name"
+                      type="text"
+                    />
+                  </FormControl>
+                  <FormMessage className="mx-2" />
+                </FormItem>
+              );
+            }}
+          />
 
           <FormField
             control={form.control}
@@ -107,7 +94,7 @@ export default function SignupForm() {
                 <FormItem>
                   <FormControl>
                     <Input
-                      disabled={isPending}
+                      disabled={isLoading}
                       {...field}
                       placeholder="Email"
                       type="email"
@@ -127,9 +114,9 @@ export default function SignupForm() {
                 <FormItem>
                   <FormControl>
                     <Input
-                      disabled={isPending}
+                      disabled={isLoading}
                       {...field}
-                      placeholder="password"
+                      placeholder="Password"
                       type="password"
                     />
                   </FormControl>
@@ -141,13 +128,13 @@ export default function SignupForm() {
 
           <FormField
             control={form.control}
-            name="passwordConfirm"
+            name="confirmPassword"
             render={({ field }) => {
               return (
                 <FormItem>
                   <FormControl>
                     <Input
-                      disabled={isPending}
+                      disabled={isLoading}
                       {...field}
                       placeholder="Confirm Password"
                       type="password"
@@ -158,9 +145,7 @@ export default function SignupForm() {
               );
             }}
           />
-          <FormSuccess message={success} />
-          <FormError message={error} />
-          <SubmitButton isPending={isPending} />
+          <SubmitButton isPending={isLoading} />
         </div>
       </form>
     </Form>

@@ -49,7 +49,7 @@ export default function UserMenu() {
         >
           {session ? (
             <Image
-              src={session?.user.image || ""}
+              src={session?.user.image || "/images/placeholder.svg"}
               alt="User profile picture"
               width={50}
               height={50}

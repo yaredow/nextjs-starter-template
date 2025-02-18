@@ -1,4 +1,4 @@
-import { createSelectSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { create } from "domain";
 import {
   pgTable,
@@ -19,6 +19,7 @@ export const user = pgTable("user", {
 });
 
 export const userCreateSchema = createSelectSchema(user);
+export const userInsertSchema = createInsertSchema(user);
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
