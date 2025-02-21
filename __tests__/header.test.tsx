@@ -4,16 +4,22 @@ import { render, screen } from "@testing-library/react";
 import { Header } from "@/modules/home/ui/components/header";
 
 describe("Header component", () => {
-  it("renders an icon and a sign in button", () => {
+  it("it renders the header with title and buttons", () => {
     render(<Header />);
 
+    // verify that the header element is rendered by checking the test id
     const headerElement = screen.getByTestId("side-header");
     expect(headerElement).toBeInTheDocument();
 
-    const iconElement = screen.getByRole("img", { name: /icon/i });
-    expect(iconElement).toBeInTheDocument();
+    // check for the site title
+    expect(screen.getByText("Next-starter")).toBeInTheDocument();
 
-    const signInButton = screen.getByRole("button", { name: /sign in/i });
+    // verify the presence of the sign in button
+    const signInButton = screen.getByText(/sign in/i);
     expect(signInButton).toBeInTheDocument();
+
+    // check for the github icon
+    const githubIcon = headerElement.querySelector(".size-6");
+    expect(githubIcon).toBeInTheDocument();
   });
 });
