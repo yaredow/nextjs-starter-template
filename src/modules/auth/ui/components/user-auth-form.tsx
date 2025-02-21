@@ -3,33 +3,39 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import * as React from "react";
 
-import { Icons } from "@/components/shared/icons";
 import { buttonVariants } from "@/components/ui/button";
+import { Icons } from "@/components/shared/icons";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/hook/use-toast";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "@/hook/use-toast";
 import { cn } from "@/lib/utils";
 
-import { SignInData, signInSchema, SignUpData, signUpSchema, userAuthData } from "../../schema";
+import {
+  SignInData,
+  signInSchema,
+  SignUpData,
+  signUpSchema,
+  userAuthData,
+} from "../../schema";
+import { useState } from "react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
 }
 
 export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
-  const [isSignup, setIsSignup] = React.useState<boolean>(type === "register");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
+  const [isSignup, setIsSignup] = useState<boolean>(type === "register");
   const router = useRouter();
 
   const form = useForm<userAuthData>({
@@ -50,7 +56,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
           toast({ description: error.error.message });
         },
         onSuccess: () => {
-          router.push("/dashboard");
+          router.push("/");
         },
       });
     } else {
@@ -61,7 +67,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
           toast({ description: error.error.message });
         },
         onSuccess: () => {
-          router.push("/dashboard");
+          router.push("/");
         },
       });
     }

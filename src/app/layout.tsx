@@ -33,7 +33,7 @@ export default function RootLayout({
         >
           <TRPCProvider>
             <NextTopLoader />
-            <div className="m-12">{children}</div>
+            <div>{children}</div>
             <Toaster />
           </TRPCProvider>
         </ThemeProvider>
