@@ -1,54 +1,59 @@
 "use client";
 
 import { Check, LogOutIcon, Monitor, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSubContent,
-    DropdownMenuTrigger,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSubContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import { authClient } from "@/lib/auth-client";
 
 export default function UserButton() {
-  const { data: session } = authClient.useSession();
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const user = session?.user;
-  const router = useRouter()
 
-  const signOut = authClient.signOut({
-  fetchOptions: {
-    onSuccess: () => {
-      router.push("/login")
-    }
-  }
-})
+  const { data: session } = authClient.useSession();
+  const { name, email, image } = session?.user || {};
 
+  const onSignOut = () => {
+    authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/login");
+        },
+      },
+    });
+  };
 
+  const avatarFallback = name
+    ? name.charAt(0).toUpperCase()
+    : (email?.charAt(0).toUpperCase() ?? "U");
 
-  const avatarFallback = user?.name
-    ? user.name.charAt(0).toUpperCase()
-    : (user?.email.charAt(0).toUpperCase() ?? "U");
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild className=" outline-none relative">
-        <Avatar className="size-10 rounded-full hover:opacity-75 transition border border-neutral-300">
-          <AvatarFallback className="bg-neutral-200 font-medium text-neutral-500 flex items-center justify-center">
-            {avatarFallback}
-          </AvatarFallback>
-        </Avatar>
+      <DropdownMenuTrigger asChild className="relative outline-none">
+        <Link href={session ? "#" : "/login"}>
+          <Avatar className="size-10 rounded-full border border-neutral-300 transition hover:opacity-75">
+            <AvatarFallback className="flex items-center justify-center bg-neutral-200 font-medium text-neutral-500">
+              {avatarFallback}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-2">
-        <DropdownMenuLabel>Logged in as {user?.name}</DropdownMenuLabel>
+        <DropdownMenuLabel>Logged in as {name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger className="flex flex-row items-center gap-2">
@@ -75,9 +80,7 @@ export default function UserButton() {
           </DropdownMenuPortal>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => signOut()}
-        >
+        <DropdownMenuItem onClick={onSignOut}>
           <LogOutIcon className="mr-2 size-4" />
           Logout
         </DropdownMenuItem>

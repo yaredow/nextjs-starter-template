@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import { authClient } from "@/lib/auth-client";
 
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 export default function UserMenu() {
   const { data: session } = authClient.useSession();

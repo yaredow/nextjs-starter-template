@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { TRPCProvider } from "@/trpc/client";
-import { AuthProvider } from "@/components/providers/auth-provider";
-import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from "nextjs-toploader";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { TRPCProvider } from "@/trpc/client";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
