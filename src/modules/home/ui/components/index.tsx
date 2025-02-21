@@ -57,14 +57,11 @@ export default function Header() {
               <MenuIcon />
             </SheetTrigger>
             <SheetContent side="right" className="text-black dark:text-white">
-              <div>
-                <ModeToggle />
-              </div>
               <div className="top-2">
                 <Avatar>
                   <AvatarImage
                     className="h-10 w-10 rounded-full"
-                    src="https://pbs.twimg.com/profile_images/1754602039311478784/EmA-O4v4_400x400.jpg"
+                    src={session?.user?.image || ""}
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>

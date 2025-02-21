@@ -1,10 +1,10 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import { UserAuthForm } from "@/modules/auth/ui/components/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
-import { Suspense } from "react";
-import { UserAuthForm } from "@/modules/auth/ui/components/user-auth-form";
+import { cn } from "@/lib/utils";
 
 export const metadata = {
   title: "Create an account",
@@ -39,7 +39,7 @@ export default function RegisterPage() {
             <UserAuthForm type="register" />
           </Suspense>
           <p className="px-8 text-center text-sm text-muted-foreground">
-            By clicking continue, you agree to our{" "}
+            By clicking continue, you agree to our
             <Link
               href="/terms"
               className="hover:text-brand underline underline-offset-4"
