@@ -1,4 +1,5 @@
-import Header from "../components";
+import { FooterComponent } from "../components/footer";
+import { Header } from "../components/header";
 
 interface HomeLayoutProps {
   children: React.ReactNode;
@@ -6,9 +7,10 @@ interface HomeLayoutProps {
 
 const HomeLayout = ({ children }: HomeLayoutProps) => {
   return (
-    <div className="h-full w-full">
+    <div className="h-screen w-full">
       <Header />
       {children}
+      <FooterComponent />
     </div>
   );
 };

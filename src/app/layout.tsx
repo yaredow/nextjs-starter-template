@@ -6,9 +6,10 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { TRPCProvider } from "@/trpc/client";
 
-import "./globals.css";
+import { cn } from "@/lib/utils";
+import { fonts } from "@/lib/fonts";
 
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Title",
@@ -22,9 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} relative flex min-h-screen flex-col`}
-      >
+      <body className={cn("min-h-screen font-sans", fonts)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
