@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
 import { UserAuthForm } from "@/modules/auth/ui/components/user-auth-form";

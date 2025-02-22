@@ -162,7 +162,11 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <button className={cn(buttonVariants())} disabled={isLoading}>
+            <button
+              type="submit"
+              className={cn(buttonVariants())}
+              disabled={isLoading}
+            >
               {isLoading && (
                 <Icons.spinner className="mr-2 size-4 animate-spin" />
               )}
