@@ -19,3 +19,7 @@ export async function verifyPassword(data: {
   const { password, hash } = data;
   return await bcrypt.compare(password, hash);
 }
+
+export function convertToSubCurrency(amount: number): number {
+  return Math.round(amount * 100);
+}
