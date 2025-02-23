@@ -7,7 +7,7 @@ import { Icons } from "@/components/shared/icons";
 import { capitalizeFullName } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/trpc/client";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
 interface UserBillingInformationsProps {
   userId: string;
@@ -75,7 +75,10 @@ export const UserBillingInformations = ({
         ) : (
           <Button onClick={onSubscribe} disabled={subscribe.isPending}>
             {subscribe.isPending ? (
-              <Loader2 className="animate-spin" />
+              <>
+                <Loader className="mr-2 animate-spin" />
+                Subscribe
+              </>
             ) : (
               "Subscribe"
             )}
