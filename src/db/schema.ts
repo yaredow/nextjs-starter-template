@@ -16,6 +16,12 @@ export const user = pgTable("user", {
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
+
+  // Stripe related fields
+  stripeCustomerId: text("stripe_customer_id"), // Store the Stripe Customer ID
+  stripeSubscriptionId: text("stripe_subscription_id"), // Store the Stripe Subscription ID
+  stripePriceId: text("stripe_price_id"), // Store the Stripe Price ID
+  stripeCurrentPeriodEnd: timestamp("stripe_current_period_end"), // Store the current subscription period end
 });
 
 export const userCreateSchema = createSelectSchema(user);

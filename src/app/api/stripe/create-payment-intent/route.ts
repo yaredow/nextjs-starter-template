@@ -7,6 +7,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   try {
+    const { cartItems, returnUrl } = await request.json();
+
+    if (!cartItems || !returnUrl) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -14,16 +20,17 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: "T-shirt",
+              name: cartItems.name,
+              images: [cartItems.image],
             },
-            unit_amount: 1000,
+            unit_amount: cartItems.price * 100,
           },
-          quantity: 1,
+          quantity: cartItems.quantity,
         },
       ],
       mode: "payment",
       success_url: `${request.headers.get("origin")}/success`,
-      cancel_url: `${request.headers.get("origin")}/cancel`,
+      cancel_url: returnUrl,
     });
 
     return NextResponse.json({ id: session.id });
