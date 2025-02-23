@@ -1,10 +1,13 @@
 "use client";
 
+import { redirect, useRouter } from "next/navigation";
+import Link from "next/link";
+
+import { Icons } from "@/components/shared/icons";
 import { capitalizeFullName } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/trpc/client";
-import Link from "next/link";
-import { Icons } from "@/components/shared/icons";
+import { Loader2 } from "lucide-react";
 
 interface UserBillingInformationsProps {
   userId: string;
@@ -13,9 +16,26 @@ interface UserBillingInformationsProps {
 export const UserBillingInformations = ({
   userId,
 }: UserBillingInformationsProps) => {
+  const router = useRouter();
+  const subscribe = trpc.stripe.subscribe.useMutation();
   const [user] = trpc.users.getUser.useSuspenseQuery({ id: userId });
 
   const isSubscribed = !!user.stripeSubscriptionId;
+
+  const onSubscribe = () => {
+    subscribe.mutate(
+      {
+        priceId: process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!,
+      },
+      {
+        onSuccess: (url) => {
+          if (url) {
+            router.push(url);
+          }
+        },
+      },
+    );
+  };
 
   return (
     <div>
@@ -53,7 +73,13 @@ export const UserBillingInformations = ({
             </Button>
           </div>
         ) : (
-          <Button>Subscribe</Button>
+          <Button onClick={onSubscribe} disabled={subscribe.isPending}>
+            {subscribe.isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Subscribe"
+            )}
+          </Button>
         )}
       </div>
     </div>
