@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { Icons } from "@/components/shared/icons";
@@ -37,6 +37,16 @@ export const UserBillingInformations = ({
     );
   };
 
+  const manageSubscription = () => {
+    const url = process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!;
+
+    if (url) {
+      router.push(url + "?prefilled_email" + user.email);
+    } else {
+      throw new Error("Failed to edit payment details");
+    }
+  };
+
   return (
     <div>
       <div className="absolute left-4 top-4">
@@ -68,7 +78,7 @@ export const UserBillingInformations = ({
                 You are subscribed! Thank you for supporting us.
               </p>
             </div>
-            <Button variant="secondary" size="sm">
+            <Button onClick={manageSubscription} variant="secondary" size="sm">
               View Plan
             </Button>
           </div>
