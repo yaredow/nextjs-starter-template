@@ -56,6 +56,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-email": "^2.1.4",
+    "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.52.0",
     "react-icons": "^5.4.0",
     "server-only": "^0.0.1",
