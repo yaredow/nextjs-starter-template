@@ -2,6 +2,10 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { stripe } from "@/lib/stripe";
+import { db } from "@/db";
+import { user } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
 
 export const stripeRouter = createTRPCRouter({
   subscribe: protectedProcedure
@@ -13,29 +17,35 @@ export const stripeRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { email, id } = ctx.user;
       const { priceId } = input;
-      console.log({ priceId });
 
-      const existingCustomer = await stripe.customers.list({
-        email,
-        limit: 1,
-      });
+      const userData = await db.select().from(user).where(eq(user.id, id));
+      let stripeCustomerId = userData[0].stripeCustomerId;
 
-      let customerId =
-        existingCustomer.data.length > 0 ? existingCustomer.data[0].id : null;
+      if (!stripeCustomerId) {
+        try {
+          const customer = await stripe.customers.create({
+            email,
+            metadata: {
+              userId: id,
+            },
+          });
 
-      if (!customerId) {
-        const customer = await stripe.customers.create({
-          email,
-          metadata: {
-            userId: id,
-          },
-        });
+          stripeCustomerId = customer.id;
 
-        customerId = customer.id;
+          await db
+            .update(user)
+            .set({ stripeCustomerId })
+            .where(eq(user.id, id));
+        } catch (error) {
+          console.error(error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+          });
+        }
       }
 
       const { url } = await stripe.checkout.sessions.create({
-        customer: customerId,
+        customer: stripeCustomerId,
         payment_method_types: ["card"],
         line_items: [
           {
