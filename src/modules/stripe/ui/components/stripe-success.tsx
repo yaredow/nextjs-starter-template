@@ -5,12 +5,20 @@ import { trpc } from "@/trpc/client";
 import { useEffect } from "react";
 
 interface StripeSuccessProps {
-  stripeCustomerId: string | undefined;
+  userId: string;
 }
 
-export const StripeSuccess = ({ stripeCustomerId }: StripeSuccessProps) => {
+export const StripeSuccess = ({ userId }: StripeSuccessProps) => {
   const router = useRouter();
+  const utils = trpc.useUtils();
   const syncStripeData = trpc.stripe.syncStripeData.useMutation();
+  const [user] = trpc.users.getUser.useSuspenseQuery({ id: userId });
+  const stripeCustomerId = user.stripeCustomerId;
+  const isSubscriptionActive = user.stripeSubscriptionStatus === "active";
+
+  if (!stripeCustomerId) {
+    router.push("/");
+  }
 
   useEffect(() => {
     if (stripeCustomerId) {
@@ -18,6 +26,7 @@ export const StripeSuccess = ({ stripeCustomerId }: StripeSuccessProps) => {
         { customerId: stripeCustomerId },
         {
           onSuccess: () => {
+            utils.users.getUser.invalidate({ id: userId });
             router.push("/");
           },
           onError: (error) => {
@@ -28,14 +37,19 @@ export const StripeSuccess = ({ stripeCustomerId }: StripeSuccessProps) => {
     } else {
       console.warn("stripeCustomerId is missing from session");
     }
-  }, [router, stripeCustomerId, syncStripeData]);
+  }, [stripeCustomerId, userId]);
 
   return (
     <div>
+      <h1>Payment Successful!</h1>
       {syncStripeData.isPending ? (
         <p>Syncing your subscription data...</p>
-      ) : (
+      ) : isSubscriptionActive === true ? (
         <p>Your subscription is now active!</p>
+      ) : isSubscriptionActive === false ? (
+        <p>It seems you are not subscribed.</p>
+      ) : (
+        <p>Loading subscription status...</p>
       )}
     </div>
   );

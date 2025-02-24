@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 import { StripeSuccess } from "@/modules/stripe/ui/components/stripe-success";
+import { HydrateClient, trpc } from "@/trpc/server";
 import { auth } from "@/lib/auth";
 
 const SuccessPage = async () => {
@@ -11,10 +12,12 @@ const SuccessPage = async () => {
     redirect("/login");
   }
 
+  void trpc.users.getUser.prefetch({ id: session.user.id });
+
   return (
-    <StripeSuccess
-      stripeCustomerId={session.user.stripeCustomerId ?? undefined}
-    />
+    <HydrateClient>
+      <StripeSuccess userId={session.user.id} />
+    </HydrateClient>
   );
 };
 
