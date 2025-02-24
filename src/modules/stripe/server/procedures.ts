@@ -1,14 +1,14 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import * as init from "@/trpc/init";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/db";
 import { user } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
-export const stripeRouter = createTRPCRouter({
-  subscribe: protectedProcedure
+export const stripeRouter = init.createTRPCRouter({
+  subscribe: init.protectedProcedure
     .input(
       z.object({
         priceId: z.string(),

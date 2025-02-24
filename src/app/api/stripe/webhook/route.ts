@@ -1,34 +1,29 @@
 import { processEvent } from "@/modules/stripe/utils/process-event";
-import { singlestoreDatabase } from "drizzle-orm/singlestore-core";
-import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
+import { headers } from "next/headers";
+
+import { stripe } from "@/lib/stripe";
 
 export async function POST(request: Request) {
   const body = await request.text();
-  const signature = (await headers()).get("stripe-signature");
+  const signature = (await headers()).get("stripe-signature") as string;
 
-  if (!signature) return NextResponse.json({}, { status: 400 });
+  if (!signature) {
+    return new NextResponse("Missing stripe signature", { status: 400 });
+  }
 
-  async function doEventProcessing() {
-    if (typeof signature !== "string") {
-      throw new Error("[STRIPE HOOK] Header is not a string");
-    }
-
-    const event = Stripe.webhooks.constructEvent(
+  try {
+    const event = stripe.webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!,
     );
 
     await processEvent(event);
-  }
 
-  try {
-    await doEventProcessing;
-  } catch (error) {
-    console.error("[STRIPE HOOK] Error processing event", error);
+    return NextResponse.json({ received: true }, { status: 200 });
+  } catch (error: any) {
+    console.error("[STRIPE WEBHOOK ERROR]", error.message);
+    return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 }); // Return error
   }
-
-  return NextResponse.json({ received: true });
 }

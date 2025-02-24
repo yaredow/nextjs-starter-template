@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:all": "concurrently \"pnpm dev --turbopack\" \"pnpm run dev:webhook\"",
+    "dev:webhook": "ngrok http --url=tolerant-goblin-reasonably.ngrok-free.app 3000",
     "build": "next build",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
@@ -40,6 +42,7 @@
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.2.0",
     "clsx": "^2.1.1",
+    "concurrently": "^9.1.2",
     "cypress": "^14.0.3",
     "depscan": "^0.4.1",
     "dotenv": "^16.4.7",
