@@ -1,11 +1,11 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { create } from "domain";
 import {
   pgTable,
   text,
   integer,
   timestamp,
   boolean,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -18,10 +18,16 @@ export const user = pgTable("user", {
   updatedAt: timestamp("updated_at").notNull(),
 
   // Stripe related fields
-  stripeCustomerId: text("stripe_customer_id"), // Store the Stripe Customer ID
-  stripeSubscriptionId: text("stripe_subscription_id"), // Store the Stripe Subscription ID
-  stripePriceId: text("stripe_price_id"), // Store the Stripe Price ID
-  stripeCurrentPeriodEnd: timestamp("stripe_current_period_end"), // Store the current subscription period end
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  stripePriceId: text("stripe_price_id"),
+  stripeCurrentPeriodEnd: timestamp("stripe_current_period_end"),
+  stripeSubscriptionStatus: varchar("stripe_subscription_status", {
+    length: 255,
+  }),
+  paymentMethodBrand: varchar("payment_method_brand", { length: 255 }),
+  paymentMethodLast4: varchar("payment_method_last4", { length: 4 }),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end"),
 });
 
 export const userCreateSchema = createSelectSchema(user);

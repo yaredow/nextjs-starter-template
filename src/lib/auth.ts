@@ -7,6 +7,16 @@ import { db } from "@/db";
 import { hashPassword, verifyPassword } from "./utils";
 
 export const auth = betterAuth({
+  user: {
+    additionalFields: {
+      stripeCustomerId: {
+        type: "string",
+        required: false,
+        defaultValue: "",
+        input: false,
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     password: {
