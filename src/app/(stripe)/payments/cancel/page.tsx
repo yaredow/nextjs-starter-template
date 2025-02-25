@@ -1,30 +1,15 @@
-"use client";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { StripeCancel } from "@/modules/stripe/ui/components/stripe-cancel";
+import { auth } from "@/lib/auth";
 
-function CancelPage() {
-  const router = useRouter();
+export default async function CancelPage() {
+  const session = await auth.api.getSession({ headers: await headers() });
 
-  useEffect(() => {
-    // Redirect to the home page after a delay
-    const timer = setTimeout(() => {
-      router.push("/"); // Replace "/" with your desired home page URL
-    }, 3000); // Redirect after 3 seconds
+  if (!session) {
+    redirect("/login");
+  }
 
-    // Clear the timer if the component unmounts
-    return () => clearTimeout(timer);
-  }, [router]);
-
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <div>
-        <h1 className="mb-4 text-2xl font-bold">Payment Cancelled</h1>
-        <p>Your payment has been cancelled.</p>
-        <p>You will be redirected to the home page shortly...</p>
-      </div>
-    </div>
-  );
+  return <StripeCancel />;
 }
-
-export default CancelPage;

@@ -1,25 +1,18 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
-import { syncStripeDataToDatabase } from "@/modules/stripe/utils/sync-stripe-data";
-import { getUser } from "@/modules/users/utils/get-user";
+import { StripeSuccess } from "@/modules/stripe/ui/components/stripe-success";
+import { trpc } from "@/trpc/server";
 import { auth } from "@/lib/auth";
 
-const SuccessPage = async () => {
+export default async function SuccessPage() {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session) {
     redirect("/login");
   }
 
-  const user = await getUser(session.user.id);
-  const stripeCustomerId = user?.stripeCustomerId;
+  void trpc.users.getUser.prefetch({ id: session.user.id });
 
-  if (!stripeCustomerId) {
-    redirect("/");
-  }
-
-  return redirect("/");
-};
-
-export default SuccessPage;
+  return <StripeSuccess userId={session.user.id} />;
+}

@@ -77,7 +77,7 @@ const customerSubscriptionCreated = async (event: any) => {
   }
 };
 
-export async function handleStripeEvent(event: Stripe.Event): Promise<void> {
+export async function handleStripeEvents(event: Stripe.Event): Promise<void> {
   if (!allowedEvents.includes(event.type)) return;
   const eventType = event.type;
 

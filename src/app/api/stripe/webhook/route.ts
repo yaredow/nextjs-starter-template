@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
-import { handleStripeEvent } from "@/modules/stripe/utils/process-event";
+import { handleStripeEvents } from "@/modules/stripe/utils/process-event";
 import { tryCatch } from "@/lib/try-catch";
 import { stripe } from "@/lib/stripe";
 
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await handleStripeEvent(event);
+    await handleStripeEvents(event);
     return NextResponse.json(
       { message: "Webhook received and processed" },
       { status: 200 },
