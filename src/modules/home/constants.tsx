@@ -14,19 +14,19 @@ export const technologies = [
       "A typed superset of JavaScript that enhances code maintainability and scalability.",
   },
   {
-    icon: <Icons.workflow className="h-8 w-8" />,
+    icon: <Icons.tailwind className="h-8 w-8" />,
     name: "Tailwind CSS",
     description:
       "A utility-first CSS framework for building custom designs with ease.",
   },
   {
-    icon: <Icons.shapes className="h-8 w-8" />,
+    icon: <Icons.shadcn className="h-8 w-8" />,
     name: "Shadcn UI",
     description:
       "Beautifully designed components that enhance your application's user interface.",
   },
   {
-    icon: <Icons.box className="h-8 w-8" />,
+    icon: <Icons.trpc className="h-8 w-8" />,
     name: "tRPC",
     description:
       "End-to-end typesafe APIs made easy with React and TypeScript.",
