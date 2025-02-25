@@ -1,7 +1,8 @@
 import { stripe } from "@/lib/stripe";
-import { db } from "@/db";
 import { user } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { db } from "@/db";
+
 import { subscriptionDataSchema } from "../schemas";
 
 export async function syncStripeDataToDatabase(customerId: string) {
