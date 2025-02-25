@@ -4,8 +4,9 @@ import { tryCatch } from "@/lib/try-catch";
 import { stripe } from "@/lib/stripe";
 
 import { syncStripeDataToDatabase } from "./sync-stripe-data";
+import { allowedEvents } from "../constants";
 
-async function getCustomerId(session: any): Promise<string | null> {
+async function getCustomerId(session: any) {
   if (typeof session?.customer === "string") {
     return session.customer;
   }
@@ -40,12 +41,52 @@ async function processCheckoutSessionCompleted(event: any) {
   await syncStripeDataToDatabase(customerId);
 }
 
+const customerSubscriptionCreated = async (event: any) => {
+  try {
+    const subscription = event.data.object as Stripe.Subscription;
+    const customerId = subscription.customer as string;
+
+    console.log(
+      `[STRIPE HOOK] Subscription created for customer ${customerId}`,
+    );
+
+    // Verify that the subscription exists in Stripe
+    const { data: retrievedSubscription, error } = await tryCatch(
+      stripe.subscriptions.retrieve(subscription.id),
+    );
+
+    if (error) {
+      throw new Error(
+        `Error retrieving subscription ${subscription.id}: ${error.message}`,
+      );
+    }
+
+    // Validate data
+    if (retrievedSubscription.customer !== customerId) {
+      console.warn(
+        `[STRIPE HOOK] Customer ID mismatch: Event ${customerId}, Retrieved ${retrievedSubscription.customer}`,
+      );
+    }
+
+    await syncStripeDataToDatabase(customerId);
+  } catch (error: any) {
+    console.error(
+      "[STRIPE HOOK] Error processing customer.subscription.created event",
+      error,
+    );
+  }
+};
+
 export async function handleStripeEvent(event: Stripe.Event): Promise<void> {
+  if (!allowedEvents.includes(event.type)) return;
   const eventType = event.type;
 
   switch (eventType) {
     case "checkout.session.completed":
       await processCheckoutSessionCompleted(event);
+      break;
+    case "customer.subscription.created":
+      await customerSubscriptionCreated(event);
       break;
     default:
       console.log(`Unhandled event type ${eventType}`);
