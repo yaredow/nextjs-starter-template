@@ -1,29 +1,36 @@
-import { processEvent } from "@/modules/stripe/utils/process-event";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
+import { handleStripeEvent } from "@/modules/stripe/utils/process-event";
+import { tryCatch } from "@/lib/try-catch";
 import { stripe } from "@/lib/stripe";
 
 export async function POST(request: Request) {
   const body = await request.text();
-  const signature = (await headers()).get("stripe-signature") as string;
+  const signature = (await headers()).get("Stripe-Signature");
 
-  if (!signature) {
-    return new NextResponse("Missing stripe signature", { status: 400 });
+  const { data: event, error } = await tryCatch(
+    Promise.resolve(
+      stripe.webhooks.constructEvent(
+        body,
+        signature!,
+        process.env.STRIPE_WEBHOOK_SECRET!,
+      ),
+    ),
+  );
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
   try {
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET!,
+    await handleStripeEvent(event);
+    return NextResponse.json(
+      { message: "Webhook received and processed" },
+      { status: 200 },
     );
-
-    await processEvent(event);
-
-    return NextResponse.json({ received: true }, { status: 200 });
-  } catch (error: any) {
-    console.error("[STRIPE WEBHOOK ERROR]", error.message);
-    return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 }); // Return error
+  } catch (err: any) {
+    console.error("Webhook processing failed", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

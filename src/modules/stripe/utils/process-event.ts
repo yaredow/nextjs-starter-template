@@ -1,31 +1,53 @@
-import Stripe from "stripe";
+import { Stripe } from "stripe";
+
+import { tryCatch } from "@/lib/try-catch";
+import { stripe } from "@/lib/stripe";
 
 import { syncStripeDataToDatabase } from "./sync-stripe-data";
-import { allowedEvents } from "../constants";
 
-const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
-  const { customer: customerId } = event?.data?.object as { customer: string };
+async function getCustomerId(session: any): Promise<string | null> {
+  if (typeof session?.customer === "string") {
+    return session.customer;
+  }
 
-  if (typeof customerId !== "string") {
-    throw new Error(
-      `[STRIPE HOOK][CANCER] ID isn't string.\nEvent type: ${event.type}`,
-    );
+  // Handle other cases where customer is an object or doesn't exist
+  console.warn("No customer ID found in session", session);
+  return null;
+}
+
+async function processCheckoutSessionCompleted(event: any) {
+  const { data: session, error } = await tryCatch(
+    stripe.checkout.sessions.retrieve(event.data.object.id, {
+      expand: ["line_items"],
+    }),
+  );
+
+  if (error) {
+    throw new Error(`Error retrieving session: ${error.message}`);
+  }
+
+  const customerId = await getCustomerId(session);
+  if (!customerId) {
+    throw new Error("No customer ID found");
+  }
+
+  const priceId = session?.line_items?.data[0]?.price?.id;
+
+  if (priceId !== process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID) {
+    throw new Error("Price ID doesn't match");
   }
 
   await syncStripeDataToDatabase(customerId);
-};
+}
 
-export const processEvent = async (event: Stripe.Event) => {
-  if (!allowedEvents.includes(event.type)) {
-    console.log(`Skipping event ${event.type}`);
-    return;
-  }
+export async function handleStripeEvent(event: Stripe.Event): Promise<void> {
+  const eventType = event.type;
 
-  switch (event.type) {
+  switch (eventType) {
     case "checkout.session.completed":
-      await handleCheckoutSessionCompleted(event);
+      await processCheckoutSessionCompleted(event);
       break;
     default:
-      console.log(`No handler for event ${event.type}`);
+      console.log(`Unhandled event type ${eventType}`);
   }
-};
+}

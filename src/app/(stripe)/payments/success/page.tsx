@@ -19,8 +19,6 @@ const SuccessPage = async () => {
     redirect("/");
   }
 
-  await syncStripeDataToDatabase(stripeCustomerId);
-
   return redirect("/");
 };
 

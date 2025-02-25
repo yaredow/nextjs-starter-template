@@ -3,7 +3,6 @@ import { user } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 
-import { subscriptionDataSchema } from "../schemas";
 import { tryCatch } from "@/lib/try-catch";
 
 export async function syncStripeDataToDatabase(customerId: string) {
@@ -21,18 +20,9 @@ export async function syncStripeDataToDatabase(customerId: string) {
     return;
   }
 
-  if (data.data.length === 0) {
-    const subData = {
-      subscriptionId: null,
-      status: "none",
-      priceId: null,
-      currentPeriodEnd: null,
-      currentPeriodStart: null,
-      cancelAtPeriodEnd: null,
-      paymentMethodBrand: null,
-      paymentMethodLast4: null,
-    };
+  console.log({ data });
 
+  if (data.data.length === 0) {
     await db
       .update(user)
       .set({
@@ -41,8 +31,7 @@ export async function syncStripeDataToDatabase(customerId: string) {
         stripePriceId: null,
       })
       .where(eq(user.stripeCustomerId, customerId));
-
-    return subscriptionDataSchema.parse(subData);
+    return;
   }
 
   const subscription = data.data[0];
@@ -60,17 +49,6 @@ export async function syncStripeDataToDatabase(customerId: string) {
       subscription.default_payment_method.card?.last4 ?? null;
   }
 
-  const subData = {
-    subscriptionId: subscription.id,
-    status: subscription.status,
-    priceId: subscription.items.data[0].price.id,
-    currentPeriodEnd: subscription.current_period_end,
-    currentPeriodStart: subscription.current_period_start,
-    cancelAtPeriodEnd: subscription.cancel_at_period_end,
-    paymentMethodBrand,
-    paymentMethodLast4,
-  };
-
   await db
     .update(user)
     .set({
@@ -83,6 +61,4 @@ export async function syncStripeDataToDatabase(customerId: string) {
       paymentMethodLast4,
     })
     .where(eq(user.stripeCustomerId, customerId));
-
-  return subscriptionDataSchema.parse(subData);
 }
