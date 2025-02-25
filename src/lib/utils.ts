@@ -19,3 +19,14 @@ export async function verifyPassword(data: {
   const { password, hash } = data;
   return await bcrypt.compare(password, hash);
 }
+
+export function convertToSubCurrency(amount: number): number {
+  return Math.round(amount * 100);
+}
+
+export function capitalizeFullName(fullName: string): string {
+  return fullName
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}

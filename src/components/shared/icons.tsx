@@ -39,6 +39,7 @@ import {
   Layers,
   CreditCardIcon,
   TestTubeIcon,
+  ArrowLeft,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -46,6 +47,7 @@ export type Icon = LucideIcon;
 export const Icons = {
   add: Plus,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   billing: CreditCard,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
