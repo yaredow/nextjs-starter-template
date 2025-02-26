@@ -1,20 +1,41 @@
 # nextjs-starter-template
 
-A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, Auth.js, Prisma ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
+A robust and flexible Next.js starter template with TypeScript, tRPC, Jest, Cypress, Better-auth.js, Drizzle ORM, and more. This template provides everything you need to kickstart your modern web development projects with best practices and industry-standard tools.
 
 ## Features
 
-- **TypeScript**: Strongly-typed language for better code quality and developer experience.
-- **Next.js**: Powerful React framework with server-side rendering.
-- **Jest**: Comprehensive unit and integration testing setup.
-- **Cypress**: End-to-end testing for simulating real user interactions.
-- **Auth.js**: Secure and easy-to-use authentication.
-- **Prisma ORM**: Advanced ORM for seamless database management and querying.
-- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
-- **ESLint and Prettier**: Ensuring code quality and consistency.
-- **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
-- **dotenv**: Easy management of environment variables.
-- **next-seo** and **next-sitemap**: SEO and sitemap management for better search engine visibility.
+This template is built using the following technologies:
+
+- **Core Technologies:**
+
+  - **Next.js**: Powerful React framework with server-side rendering and more.
+  - **TypeScript**: Strongly-typed language for enhanced code quality and maintainability.
+
+- **UI & Styling:**
+
+  - **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
+  - **Shadcn UI**: Beautifully designed and accessible UI components.
+
+- **Backend & Data:**
+
+  - **tRPC**: End-to-end typesafe APIs made easy with React and TypeScript.
+  - **Drizzle**: TypeScript ORM that's lightweight, performant, and type-safe.
+  - **Stripe**: Powerful and flexible tools for internet commerce and online payments.
+
+- **Authentication & Security:**
+
+  - **Better-auth**: Modern authentication solution for Next.js applications with enhanced security.
+
+- **Testing:**
+
+  - **Jest**: Comprehensive unit and integration testing setup.
+  - **Cypress**: End-to-end testing for simulating real user interactions.
+
+- **Other Features:**
+  - **ESLint and Prettier**: Ensuring code quality and consistency.
+  - **Husky and Lint-Staged**: Pre-commit hooks to automate tests and linting.
+  - **dotenv**: Easy management of environment variables.
+  - **next-seo** and **next-sitemap**: SEO and sitemap management for better search engine visibility.
 
 ## Getting Started
 
@@ -22,7 +43,10 @@ A robust and flexible Next.js starter template with TypeScript, Jest, Cypress, A
 
 - **Auth Google keys**: [Generate your Google auth API key here](console.cloud.google.com).
 - **Auth Facebook keys**: [Get your Facebook auth API key here](developers.facebook.com).
+- **Stripe**: Follow [this guide](https://stripe.com/docs/keys) to obtain your Stripe API keys and configure your Stripe account.
+- **Better-auth**: Follow [this guide](https://better-auth.com/docs/get-started) to set up Better-auth and obtain your necessary credentials.
 - **Resend key**: [Get your Stripe Resend key here](resend.com).
+- **Upstash Redis (for rate limiting)**: Follow [this guide](https://upstash.com/docs/getting-started) to create an Upstash Redis database and obtain your connection details.
 
 Clone the repository and start building your application with confidence!
 
@@ -120,6 +144,5 @@ This project is licensed under the MIT License.
 Contributions are welcome! Please open an issue or submit a pull request.
 
 ```
-
 
 ```

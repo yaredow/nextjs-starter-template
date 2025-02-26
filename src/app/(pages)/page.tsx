@@ -40,7 +40,7 @@ export default function Home() {
 
             <BlurFade
               delay={BLUR_FADE_DELAY * 4}
-              className="text-center font-sans text-muted-foreground"
+              className="text-center font-sans text-lg text-muted-foreground"
             >
               Kickstart your Next.js project with a clean and scalable
               foundation. This template follows a module-based file structure,
@@ -78,7 +78,7 @@ export default function Home() {
       </BlurFade>
 
       <BlurFade delay={BLUR_FADE_DELAY * 2}>
-        <section className="py-18 w-full px-4">
+        <section className="w-full px-4 py-20">
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="flex flex-col gap-12">
@@ -151,7 +151,7 @@ export default function Home() {
       </BlurFade>
 
       <BlurFade delay={BLUR_FADE_DELAY * 3}>
-        <section className="py-18 w-full px-4">
+        <section className="w-full px-4 py-20">
           <div className="mx-auto max-w-6xl space-y-8 text-center">
             <div className="space-y-4">
               <h2 className="text-gradient font-montserrat text-4xl font-bold tracking-tight sm:text-3xl md:text-4xl">
