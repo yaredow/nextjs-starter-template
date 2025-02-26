@@ -151,7 +151,7 @@ export default function Home() {
       </BlurFade>
 
       <BlurFade delay={BLUR_FADE_DELAY * 3}>
-        <section className="w-full px-4 py-20">
+        <section className="py-18 w-full px-4">
           <div className="mx-auto max-w-6xl space-y-8 text-center">
             <div className="space-y-4">
               <h2 className="text-gradient font-montserrat text-4xl font-bold tracking-tight sm:text-3xl md:text-4xl">
