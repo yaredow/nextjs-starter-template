@@ -19,13 +19,16 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
+import { User } from "better-auth";
 
-export default function UserButton() {
+interface UserButtonProps {
+  user: User;
+}
+
+export default function UserButton({ user }: UserButtonProps) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-
-  const { data: session } = authClient.useSession();
-  const { name, email, image } = session?.user || {};
+  const { name, email } = user;
 
   const onSignOut = () => {
     authClient.signOut({
@@ -44,7 +47,7 @@ export default function UserButton() {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild className="relative outline-none">
-        <Link href={session ? "#" : "/login"}>
+        <Link href={user ? "#" : "/login"}>
           <Avatar className="size-10 rounded-full border border-neutral-300 transition hover:opacity-75">
             <AvatarFallback className="flex items-center justify-center bg-neutral-200 font-medium text-neutral-500">
               {avatarFallback}
