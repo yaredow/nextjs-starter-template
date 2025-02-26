@@ -1,5 +1,5 @@
 import NextTopLoader from "nextjs-toploader";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import type { Metadata } from "next";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -11,10 +11,11 @@ import { fonts } from "@/lib/fonts";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Title",
-  description: "description",
-};
+const fontSans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  fallback: ["system-ui", "arial"],
+});
 
 export default function RootLayout({
   children,

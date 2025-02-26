@@ -1,12 +1,10 @@
 import { Footer } from "@/components/ui/footer";
-import { Hexagon, Github, Twitter } from "lucide-react";
+import { Github, Twitter } from "lucide-react";
 
 export const FooterComponent = () => {
   return (
     <div className="w-full">
       <Footer
-        logo={<Hexagon className="h-10 w-10" />}
-        brandName="Awesome Corp"
         socialLinks={[
           {
             icon: <Twitter className="h-5 w-5" />,
@@ -30,8 +28,7 @@ export const FooterComponent = () => {
           { href: "/terms", label: "Terms" },
         ]}
         copyright={{
-          text: "© 2024 Awesome Corp",
-          license: "All rights reserved",
+          text: "© 2025 Yared Yilma",
         }}
       />
     </div>

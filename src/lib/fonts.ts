@@ -1,4 +1,4 @@
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Montserrat } from "next/font/google";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -12,4 +12,14 @@ const fontMono = JetBrains_Mono({
   fallback: ["system-ui", "arial"],
 });
 
-export const fonts = [fontSans.variable, fontMono.variable];
+const fontMontserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  fallback: ["system-ui", "arial"],
+});
+
+export const fonts = [
+  fontSans.variable,
+  fontMono.variable,
+  fontMontserrat.variable,
+];
