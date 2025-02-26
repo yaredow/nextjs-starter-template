@@ -78,7 +78,7 @@ export default function Home() {
       </BlurFade>
 
       <BlurFade delay={BLUR_FADE_DELAY * 2}>
-        <section className="w-full px-4 py-20">
+        <section className="py-18 w-full px-4">
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="flex flex-col gap-12">
