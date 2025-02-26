@@ -8,12 +8,12 @@ export const FooterComponent = () => {
         socialLinks={[
           {
             icon: <Twitter className="h-5 w-5" />,
-            href: "https://twitter.com",
+            href: "https://twitter.com/yared_ow",
             label: "Twitter",
           },
           {
             icon: <Github className="h-5 w-5" />,
-            href: "https://github.com",
+            href: "https://github.com/yaredow",
             label: "GitHub",
           },
         ]}
