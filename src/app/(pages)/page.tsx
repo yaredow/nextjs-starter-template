@@ -10,6 +10,7 @@ import { technologies } from "@/modules/home/constants";
 import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { SiteConfig } from "@/configs/site.config";
 
 const BLUR_FADE_DELAY = 0.04;
 
