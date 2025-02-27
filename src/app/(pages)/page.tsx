@@ -22,10 +22,10 @@ export default function Home() {
             <div className="z-10 flex items-center justify-center">
               <div
                 className={cn(
-                  "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
+                  "group rounded-full text-base transition-all ease-in hover:cursor-pointer",
                 )}
               >
-                <AnimatedShinyText className="inline-flex items-center justify-center bg-blue-50 px-4 py-1 transition ease-out hover:text-blue-600 hover:duration-300 dark:bg-blue-950 hover:dark:text-blue-400">
+                <AnimatedShinyText className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1 transition ease-out hover:text-blue-600 hover:duration-300 dark:border-blue-800/30 dark:bg-blue-900 hover:dark:text-blue-400">
                   <span>✨ Feature rich Next.js template</span>
                   <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                 </AnimatedShinyText>
@@ -33,7 +33,7 @@ export default function Home() {
             </div>
 
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
-              <h1 className="text-gradient font-montserrat text-5xl font-bold tracking-tight sm:text-4xl md:text-6xl">
+              <h1 className="bg-gradient-to-r from-blue-950 via-blue-700 to-blue-900 bg-clip-text font-montserrat text-5xl font-bold tracking-tight text-transparent dark:from-blue-50 dark:via-blue-400 dark:to-blue-200 sm:text-4xl md:text-6xl">
                 Next Starter Template
               </h1>
             </BlurFade>
@@ -86,17 +86,17 @@ export default function Home() {
                   <div className="z-10 flex items-center justify-start">
                     <div
                       className={cn(
-                        "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
+                        "group rounded-full text-base transition-all ease-in hover:cursor-pointer",
                       )}
                     >
-                      <AnimatedShinyText className="inline-flex items-center justify-center bg-blue-50 px-4 py-1 transition ease-out hover:text-blue-600 hover:duration-300 dark:bg-blue-950 hover:dark:text-blue-400">
+                      <AnimatedShinyText className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1 transition ease-out hover:text-blue-600 hover:duration-300 dark:border-blue-800/30 dark:bg-blue-900 hover:dark:text-blue-400">
                         <span>✨ Explore our adavantages</span>
                         <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                       </AnimatedShinyText>
                     </div>
                   </div>
 
-                  <h1 className="text-gradient font-montserrat text-4xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+                  <h1 className="bg-gradient-to-r from-blue-950 via-blue-700 to-blue-900 bg-clip-text font-montserrat text-4xl font-bold tracking-tight text-transparent dark:from-blue-50 dark:via-blue-400 dark:to-blue-200 sm:text-3xl md:text-4xl">
                     Make Development Easier
                   </h1>
 
@@ -154,7 +154,7 @@ export default function Home() {
         <section className="py-18 w-full px-4">
           <div className="mx-auto max-w-6xl space-y-8 text-center">
             <div className="space-y-4">
-              <h2 className="text-gradient font-montserrat text-4xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+              <h2 className="bg-gradient-to-r from-blue-950 via-blue-700 to-blue-900 bg-clip-text font-montserrat text-4xl font-bold tracking-tight text-transparent dark:from-blue-50 dark:via-blue-400 dark:to-blue-200 sm:text-3xl md:text-4xl">
                 Built with Modern Tech Stack
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
@@ -167,15 +167,17 @@ export default function Home() {
               {technologies.map((tech) => (
                 <Card
                   key={tech.name}
-                  className="group relative overflow-hidden border bg-card"
+                  className="group relative overflow-hidden border border-blue-50 bg-gradient-to-b from-white to-blue-50/10 transition-shadow hover:shadow-md hover:shadow-blue-50 dark:border-blue-900/30 dark:from-background dark:to-blue-950/5 dark:hover:shadow-blue-900/10"
                 >
                   <CardHeader className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <div className="flex h-12 w-12 items-center justify-center p-2">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-md bg-blue-50/30 p-2 dark:bg-blue-900/10">
                         {tech.icon}
                       </div>
                       <Link href={tech.link}>
-                        <Icons.arrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                        <div className="rounded-full p-2 transition-colors hover:bg-blue-50/70 dark:hover:bg-blue-900/20">
+                          <Icons.arrowRight className="h-5 w-5 text-blue-400 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 dark:text-blue-300" />
+                        </div>
                       </Link>
                     </div>
                     <CardTitle className="text-xl">{tech.name}</CardTitle>
@@ -216,12 +218,14 @@ function Feature({
   return (
     <div className="flex gap-4">
       <div className="flex-none">
-        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600/10 dark:bg-blue-400/10">
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100/80 text-blue-600 transition-colors hover:bg-blue-200/80 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-800/40">
           <Icon className="h-6 w-6" />
         </div>
       </div>
       <div className="space-y-2">
-        <h3 className="text-xl font-semibold">{title}</h3>
+        <h3 className="text-xl font-semibold text-blue-950 dark:text-blue-100">
+          {title}
+        </h3>
         <p className="text-muted-foreground">{description}</p>
       </div>
     </div>
