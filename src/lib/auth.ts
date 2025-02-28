@@ -1,15 +1,21 @@
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins/two-factor";
+import { emailOTP } from "better-auth/plugins/email-otp";
 import { betterAuth } from "better-auth";
 
-import { account, session, user, verification } from "@/db/schema";
+import {
+  account,
+  session,
+  twoFactor as twoFactorModel,
+  user,
+  verification,
+} from "@/db/schema";
+import TwoFactorEmail from "@/emails/2fa-verification-email";
 import { db } from "@/db";
 
 import { hashPassword, verifyPassword } from "./utils";
+import { tryCatch } from "./try-catch";
 import { resend } from "./resend";
-import TwoFactorEmail from "@/emails/2fa-verification-email";
-
-// You may want to create this service for sending emails
 
 export const auth = betterAuth({
   appName: "Next start",
@@ -34,23 +40,36 @@ export const auth = betterAuth({
       session,
       account,
       verification,
+      twoFactor: twoFactorModel,
     },
   }),
   plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        // Implement the sendVerificationOTP method to send the OTP to the user's email address
+      },
+    }),
     twoFactor({
       otpOptions: {
         async sendOTP({ otp, user }, request) {
-          await resend.emails.send({
-            from: "yaredyilma11@gmail.com",
-            to: user.email,
-            subject: "Your OTP",
-            react: TwoFactorEmail({
-              verificationCode: otp,
-              companyName: "Next start",
-              userName: user.name,
-              supportEmail: "yaredyilma11@gmail.com",
+          const { error } = await tryCatch(
+            resend.emails.send({
+              from: "yaredyilma11@gmail.com",
+              to: user.email,
+              subject: "Your OTP",
+              react: TwoFactorEmail({
+                verificationCode: otp,
+                companyName: "Next start",
+                userName: user.name,
+                supportEmail: "yaredyilma11@gmail.com",
+              }),
             }),
-          });
+          );
+
+          if (error) {
+            console.error(error);
+            throw new Error("Failed to send OTP");
+          }
         },
       },
     }),

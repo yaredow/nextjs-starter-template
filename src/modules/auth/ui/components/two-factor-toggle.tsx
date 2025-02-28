@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/components/ui/use-toast";
 import { authClient } from "@/lib/auth-client";
 import {
   Dialog,
@@ -14,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hook/use-toast";
+import { trpc } from "@/trpc/client";
 
 interface TwoFactorToggleProps {
   isTwoFactorEnabled: boolean;
@@ -27,82 +28,107 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
   const [showVerificationPrompt, setShowVerificationPrompt] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
-  const { toast } = useToast();
-
   const handleToggle = async () => {
     if (isEnabled) {
-      setShowPasswordPrompt(true); // Show password prompt for disabling
+      setShowPasswordPrompt(true);
     } else {
-      setShowPasswordPrompt(true); // Show password prompt for enabling
+      setShowPasswordPrompt(true);
     }
   };
 
   const handleEnable2FA = async () => {
     setIsLoading(true);
-    try {
-      await authClient.twoFactor.enable({
-        password: password,
-      });
-      setShowPasswordPrompt(false);
-      setShowVerificationPrompt(true); // Show verification prompt
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          error.message || "Failed to enable two-factor authentication",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    await authClient.twoFactor.enable({
+      password: password,
+    });
   };
 
   const handleVerify2FA = async () => {
     setIsLoading(true);
-    try {
-      await authClient.twoFactor.verifyTotp({
+    await authClient.twoFactor.verifyTotp(
+      {
         code: verificationCode,
-      });
-      setIsEnabled(true);
-      setShowVerificationPrompt(false);
-      toast({
-        title: "2FA Enabled",
-        description: "Two-factor authentication has been enabled",
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to verify two-factor code",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+      },
+      {
+        onSuccess: () => {
+          setIsLoading(false);
+          setShowVerificationPrompt(false);
+          setIsEnabled(true);
+          toast({
+            title: "2FA Enabled",
+            description: "Two-factor authentication has been enabled",
+          });
+        },
+        onError: (ctx) => {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description:
+              ctx.error.message || "Failed to verify two-factor code",
+          });
+        },
+      },
+    );
   };
 
   const handleDisable2FA = async () => {
     setIsLoading(true);
-    try {
-      await authClient.twoFactor.disable({
+    await authClient.twoFactor.disable(
+      {
         password: password,
-      });
-      setIsEnabled(false);
-      setShowPasswordPrompt(false);
-      toast({
-        title: "2FA Disabled",
-        description: "Two-factor authentication has been disabled",
-      });
-    } catch (error: any) {
+      },
+      {
+        onSuccess: () => {
+          setIsEnabled(false);
+          setShowPasswordPrompt(false);
+          toast({
+            title: "2FA Disabled",
+            description: "Two-factor authentication has been disabled",
+          });
+        },
+        onError: (ctx) => {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description:
+              ctx.error.message ||
+              "Failed to disable two-factor authentication",
+          });
+        },
+      },
+    );
+  };
+
+  const handleSendOtp = async () => {
+    const { error } = await authClient.twoFactor.sendOtp();
+
+    if (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description:
-          error.message || "Failed to disable two-factor authentication",
+        description: error.message || "Failed to send verification code",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  const verifyPassword = trpc.users.verifyUserPassword.useMutation({
+    onSuccess: async () => {
+      setShowPasswordPrompt(false);
+      if (isEnabled) {
+        handleDisable2FA();
+      } else {
+        await handleSendOtp();
+        setShowVerificationPrompt(true);
+      }
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to verify password",
+      });
+    },
+  });
 
   return (
     <>
@@ -113,7 +139,6 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
         aria-label="Toggle 2FA"
       />
 
-      {/* Password confirmation dialog */}
       <Dialog
         open={showPasswordPrompt}
         onOpenChange={() => setShowPasswordPrompt(false)}
@@ -141,7 +166,7 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
               />
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
             <Button
               type="button"
               variant="secondary"
@@ -152,15 +177,18 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
             <Button
               type="submit"
               disabled={isLoading}
-              onClick={isEnabled ? handleDisable2FA : handleEnable2FA}
+              onClick={() => verifyPassword.mutate({ password })}
             >
-              {isLoading ? "Please wait..." : isEnabled ? "Disable" : "Enable"}
+              {verifyPassword.isPending
+                ? "Please wait..."
+                : isEnabled
+                  ? "Disable"
+                  : "Enable"}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Verification code dialog */}
       <Dialog
         open={showVerificationPrompt}
         onOpenChange={() => setShowVerificationPrompt(false)}
