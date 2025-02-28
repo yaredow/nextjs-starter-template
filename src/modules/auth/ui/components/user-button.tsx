@@ -3,9 +3,11 @@
 import { Check, LogOutIcon, Monitor, Moon, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { User } from "better-auth";
 import Image from "next/image";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { authClient } from "@/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +20,6 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authClient } from "@/lib/auth-client";
-import { User } from "better-auth";
 
 interface UserButtonProps {
   user: User;
@@ -47,7 +47,10 @@ export default function UserButton({ user }: UserButtonProps) {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild className="relative outline-none">
+      <DropdownMenuTrigger
+        asChild
+        className="relative cursor-pointer outline-none"
+      >
         <Avatar className="relative size-10 rounded-full border border-neutral-300 transition hover:opacity-75">
           {image ? (
             <Image

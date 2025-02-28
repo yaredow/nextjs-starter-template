@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
@@ -26,7 +27,7 @@ import {
   signUpSchema,
   userAuthData,
 } from "../../schema";
-import { useState } from "react";
+import { PasswordInput } from "./password-input";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -53,7 +54,11 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
         onError: (error) => {
-          toast({ description: error.error.message });
+          toast({
+            description: error.error.message,
+            variant: "destructive",
+            title: "Sign up failed",
+          });
         },
         onSuccess: () => {
           router.push("/");
@@ -64,7 +69,11 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
         onError: (error) => {
-          toast({ description: error.error.message });
+          toast({
+            description: error.error.message,
+            variant: "destructive",
+            title: "Authentication failed",
+          });
         },
         onSuccess: () => {
           router.push("/");
@@ -93,31 +102,31 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
-        {isSignup && (
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your Name"
-                    type="text"
-                    autoCapitalize="none"
-                    autoComplete="name"
-                    autoCorrect="off"
-                    disabled={isLoading || isGoogleLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          {isSignup && (
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Your Name"
+                      type="text"
+                      autoCapitalize="none"
+                      autoComplete="name"
+                      autoCorrect="off"
+                      disabled={isLoading || isGoogleLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
           <div className="grid gap-2">
             <FormField
               control={form.control}
@@ -148,15 +157,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="********"
-                      type="password"
-                      autoCapitalize="none"
-                      autoComplete="current-password"
-                      autoCorrect="off"
-                      disabled={isLoading || isGoogleLoading}
-                      {...field}
-                    />
+                    <PasswordInput placeholder="Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,6 +188,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
+
       <button
         type="button"
         className={cn(buttonVariants({ variant: "outline" }))}
