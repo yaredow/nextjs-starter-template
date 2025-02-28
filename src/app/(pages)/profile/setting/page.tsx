@@ -50,7 +50,7 @@ export default async function SettingPage() {
                 </p>
               </div>
               <TwoFactorToggle
-                isTwoFactorEnabled={session.user.twoFactorEnabled ?? undefined}
+                isTwoFactorEnabled={!!session.user?.twoFactorEnabled}
               />
             </div>
           </CardContent>

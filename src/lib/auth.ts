@@ -6,9 +6,10 @@ import { account, session, user, verification } from "@/db/schema";
 import { db } from "@/db";
 
 import { hashPassword, verifyPassword } from "./utils";
+import { resend } from "./resend";
+import TwoFactorEmail from "@/emails/2fa-verification-email";
 
 // You may want to create this service for sending emails
-import { sendEmail } from "@/services/email";
 
 export const auth = betterAuth({
   appName: "Next start",
@@ -39,17 +40,16 @@ export const auth = betterAuth({
     twoFactor({
       otpOptions: {
         async sendOTP({ otp, user }, request) {
-          await sendEmail({
+          await resend.emails.send({
+            from: "yaredyilma11@gmail.com",
             to: user.email,
-            subject: "Your Two-Factor Authentication Code",
-            text: `Your verification code is: ${otp}. It will expire in 10 minutes.`,
-            html: `
-              <div>
-                <h1>Two-Factor Authentication</h1>
-                <p>Your verification code is: <strong>${otp}</strong></p>
-                <p>This code will expire in 10 minutes.</p>
-              </div>
-            `,
+            subject: "Your OTP",
+            react: TwoFactorEmail({
+              verificationCode: otp,
+              companyName: "Next start",
+              userName: user.name,
+              supportEmail: "yaredyilma11@gmail.com",
+            }),
           });
         },
       },

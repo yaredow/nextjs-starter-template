@@ -41,21 +41,9 @@ const twoFactorFormSchema = z.object({
 
 type TwoFactorFormValues = z.infer<typeof twoFactorFormSchema>;
 
-interface TwoFactorFormProps {
-  sessionId: string;
-  userId: string;
-  onSuccess?: () => void;
-  onCancel?: () => void;
-  className?: string;
-}
+interface TwoFactorFormProps {}
 
-export function TwoFactorForm({
-  sessionId,
-  userId,
-  onSuccess,
-  onCancel,
-  className,
-}: TwoFactorFormProps) {
+export function TwoFactorForm({}: TwoFactorFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -69,50 +57,27 @@ export function TwoFactorForm({
   const onSubmit = async (values: TwoFactorFormValues) => {
     setIsLoading(true);
 
-    try {
-      const { data, error } = await authClient.twoFactor.verifyTotp({
-        code: values.code,
-        trustDevice: true,
-      });
+    const { data, error } = await authClient.twoFactor.verifyTotp({
+      code: values.code,
+      trustDevice: true,
+    });
 
-      if (data) {
-        router.push("/dashboard");
-      }
+    if (data) {
+      router.push("/dashboard");
+    }
 
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Verification failed",
-          description: error.message || "Please check your code and try again.",
-        });
-        return;
-      }
-
-      toast({
-        title: "Verification successful",
-        description: "Two-factor authentication completed.",
-      });
-
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        // If using callbackURL, this might be redundant
-        router.refresh();
-      }
-    } catch (error) {
-      console.error("2FA verification error:", error);
+    if (error) {
       toast({
         variant: "destructive",
-        title: "Something went wrong",
-        description: "Please try again later.",
+        title: "Verification failed",
+        description: error.message || "Please check your code and try again.",
       });
-    } finally {
-      setIsLoading(false);
+      return;
     }
   };
 
   return (
-    <Card className={className}>
+    <Card className="w-full border-none p-0">
       <CardHeader>
         <CardTitle>Two-Factor Authentication</CardTitle>
         <CardDescription>
@@ -164,16 +129,9 @@ export function TwoFactorForm({
         </Form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        {onCancel && (
-          <Button
-            variant="outline"
-            onClick={onCancel}
-            disabled={isLoading}
-            type="button"
-          >
-            Cancel
-          </Button>
-        )}
+        <Button variant="outline" disabled={isLoading} type="button">
+          Cancel
+        </Button>
         <Button
           onClick={form.handleSubmit(onSubmit)}
           disabled={isLoading || !form.formState.isValid}
