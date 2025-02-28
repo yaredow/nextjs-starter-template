@@ -4,11 +4,13 @@ import { redirect } from "next/navigation";
 
 import {
   Card,
-  CardTitle,
-  CardHeader,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
+import { UpdatePasswordForm } from "@/modules/auth/ui/components/update-password-form";
+import { TwoFactorToggle } from "@/modules/auth/ui/components/two-factor-toggle";
 
 export default async function SettingPage() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -22,21 +24,18 @@ export default async function SettingPage() {
       <h1 className="mb-6 text-2xl font-bold">Account Settings</h1>
 
       <div className="space-y-6">
-        {/* Profile section */}
+        {/* Password Update Section */}
         <Card>
           <CardHeader>
-            <CardTitle>Profile Information</CardTitle>
-            <CardDescription>Update your account details</CardDescription>
+            <CardTitle>Change Password</CardTitle>
+            <CardDescription>Update your account password</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">
-              Edit your profile details here.
-            </p>
-            {/* Placeholder for profile form */}
+            <UpdatePasswordForm />
           </CardContent>
         </Card>
 
-        {/* Security section - with minimal 2FA placeholder */}
+        {/* Security section with 2FA toggle */}
         <Card>
           <CardHeader>
             <CardTitle>Security</CardTitle>
@@ -50,7 +49,9 @@ export default async function SettingPage() {
                   Add an extra layer of security to your account
                 </p>
               </div>
-              <div>{/* Placeholder for 2FA toggle */}</div>
+              <TwoFactorToggle
+                isTwoFactorEnabled={session.user.twoFactorEnabled ?? undefined}
+              />
             </div>
           </CardContent>
         </Card>
