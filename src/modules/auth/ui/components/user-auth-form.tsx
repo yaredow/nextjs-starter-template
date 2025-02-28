@@ -53,14 +53,18 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       await authClient.signUp.email(values as SignUpData, {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
-        onError: (error) => {
+        onError: (ctx) => {
           toast({
-            description: error.error.message,
+            description: ctx.error.message,
             variant: "destructive",
             title: "Sign up failed",
           });
         },
         onSuccess: () => {
+          toast({
+            title: "Account created",
+            description: "Account created successfully",
+          });
           router.push("/");
         },
       });
@@ -68,9 +72,9 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       await authClient.signIn.email(values as SignInData, {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
-        onError: (error) => {
+        onError: (ctx) => {
           toast({
-            description: error.error.message,
+            description: ctx.error.message,
             variant: "destructive",
             title: "Authentication failed",
           });
@@ -112,6 +116,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
+                      className={cn(isLoading && "opacity-50")}
                       placeholder="Your Name"
                       type="text"
                       autoCapitalize="none"
@@ -136,6 +141,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
+                      className={cn(isLoading && "opacity-50")}
                       placeholder="name@example.com"
                       type="email"
                       autoCapitalize="none"
@@ -188,7 +194,6 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-
       <button
         type="button"
         className={cn(buttonVariants({ variant: "outline" }))}
