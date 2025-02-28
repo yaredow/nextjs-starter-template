@@ -3,7 +3,7 @@
 import { Check, LogOutIcon, Monitor, Moon, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import Link from "next/link";
+import Image from "next/image";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -28,7 +28,8 @@ interface UserButtonProps {
 export default function UserButton({ user }: UserButtonProps) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const { name, email } = user;
+  const { name, email, image } = user;
+  console.log({ image });
 
   const onSignOut = () => {
     authClient.signOut({
@@ -47,13 +48,20 @@ export default function UserButton({ user }: UserButtonProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild className="relative outline-none">
-        <Link href={user ? "#" : "/login"}>
-          <Avatar className="size-10 rounded-full border border-neutral-300 transition hover:opacity-75">
+        <Avatar className="relative size-10 rounded-full border border-neutral-300 transition hover:opacity-75">
+          {image ? (
+            <Image
+              src={image}
+              alt="User Avatar"
+              fill
+              className="rounded-full object-cover"
+            />
+          ) : (
             <AvatarFallback className="flex items-center justify-center bg-neutral-200 font-medium text-neutral-500">
               {avatarFallback}
             </AvatarFallback>
-          </Avatar>
-        </Link>
+          )}
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-2">
         <DropdownMenuLabel>Logged in as {name}</DropdownMenuLabel>
@@ -64,7 +72,7 @@ export default function UserButton({ user }: UserButtonProps) {
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
-              <DropdownMenuItem onClick={() => "system"}>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
                 <Monitor className="mr-2 size-4" />
                 System default
                 {theme === "system" && <Check className="ms-2 size-4" />}
@@ -78,7 +86,7 @@ export default function UserButton({ user }: UserButtonProps) {
                 <Moon className="mr-2 size-4" />
                 Dark
                 {theme === "dark" && <Check className="ms-2 size-4" />}
-              </DropdownMenuItem>{" "}
+              </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
@@ -87,7 +95,7 @@ export default function UserButton({ user }: UserButtonProps) {
           <LogOutIcon className="mr-2 size-4" />
           Logout
         </DropdownMenuItem>
-      </DropdownMenuContent>{" "}
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 }
