@@ -28,6 +28,7 @@ import {
   userAuthData,
 } from "../../schema";
 import { PasswordInput } from "./password-input";
+import { TwoFactorForm } from "./two-factor-form";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -37,6 +38,11 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
   const [isSignup, setIsSignup] = useState<boolean>(type === "register");
+  const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
+  const [twoFactorData, setTwoFactorData] = useState<{
+    sessionId: string;
+    userId: string;
+  } | null>(null);
   const router = useRouter();
 
   const form = useForm<userAuthData>({
@@ -79,8 +85,22 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
             title: "Authentication failed",
           });
         },
-        onSuccess: () => {
-          router.push("/");
+        onSuccess: async (ctx) => {
+          if (ctx.data.twoFactorRedirect) {
+            // Handle 2FA verification
+            setTwoFactorData({
+              sessionId: ctx.data.sessionId,
+              userId: ctx.data.userId,
+            });
+            setShowTwoFactor(true);
+          } else {
+            toast({
+              title: "Success",
+              description: "Signed in successfully",
+            });
+            router.push("/");
+            router.refresh();
+          }
         },
       });
     }
@@ -102,6 +122,24 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       },
     });
   };
+
+  if (showTwoFactor && twoFactorData) {
+    return (
+      <TwoFactorForm
+        className={className}
+        sessionId={twoFactorData.sessionId}
+        userId={twoFactorData.userId}
+        onSuccess={() => {
+          router.push("/");
+          router.refresh();
+        }}
+        onCancel={() => {
+          setShowTwoFactor(false);
+          setTwoFactorData(null);
+        }}
+      />
+    );
+  }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>

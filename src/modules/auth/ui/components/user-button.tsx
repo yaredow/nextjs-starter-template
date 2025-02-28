@@ -1,10 +1,19 @@
 "use client";
 
-import { Check, LogOutIcon, Monitor, Moon, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { User } from "better-auth";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  Check,
+  LogOutIcon,
+  Monitor,
+  Moon,
+  Settings,
+  Sun,
+  User as UserIcon,
+} from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
@@ -69,6 +78,18 @@ export default function UserButton({ user }: UserButtonProps) {
       <DropdownMenuContent className="mr-2">
         <DropdownMenuLabel>Logged in as {name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/profile" className="flex items-center">
+            <UserIcon className="mr-2 size-4" />
+            Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/profile/setting" className="flex items-center">
+            <Settings className="mr-2 size-4" />
+            Settings
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger className="flex flex-row items-center gap-2">
             <Monitor className="mr-2 size-4" /> Theme
