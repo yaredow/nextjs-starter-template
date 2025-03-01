@@ -3,6 +3,8 @@ import { twoFactor } from "better-auth/plugins/two-factor";
 import { emailOTP } from "better-auth/plugins/email-otp";
 import { betterAuth } from "better-auth";
 
+import TwoFactorEmail from "@/emails/2fa-verification-email";
+import { db } from "@/db";
 import {
   account,
   session,
@@ -10,8 +12,6 @@ import {
   user,
   verification,
 } from "@/db/schema";
-import TwoFactorEmail from "@/emails/2fa-verification-email";
-import { db } from "@/db";
 
 import { hashPassword, verifyPassword } from "./utils";
 import { tryCatch } from "./try-catch";
@@ -44,11 +44,6 @@ export const auth = betterAuth({
     },
   }),
   plugins: [
-    emailOTP({
-      async sendVerificationOTP({ email, otp, type }) {
-        // Implement the sendVerificationOTP method to send the OTP to the user's email address
-      },
-    }),
     twoFactor({
       otpOptions: {
         async sendOTP({ otp, user }, request) {

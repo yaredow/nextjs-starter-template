@@ -1,8 +1,14 @@
 "use client";
 
 import { useState } from "react";
+
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/hook/use-toast";
+import { trpc } from "@/trpc/client";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +16,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/hook/use-toast";
-import { trpc } from "@/trpc/client";
 
 interface TwoFactorToggleProps {
   isTwoFactorEnabled: boolean;
@@ -38,37 +39,63 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
 
   const handleEnable2FA = async () => {
     setIsLoading(true);
-    await authClient.twoFactor.enable({
-      password: password,
-    });
+    try {
+      const { error: enable2faError } = await authClient.twoFactor.enable({
+        password,
+      });
+
+      if (enable2faError) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: enable2faError.message,
+        });
+
+        return;
+      }
+
+      const { error } = await authClient.twoFactor.sendOtp();
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+        return;
+      }
+
+      setShowVerificationPrompt(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleVerify2FA = async () => {
     setIsLoading(true);
-    await authClient.twoFactor.verifyTotp(
-      {
+    try {
+      const { error } = await authClient.twoFactor.verifyOtp({
         code: verificationCode,
-      },
-      {
-        onSuccess: () => {
-          setIsLoading(false);
-          setShowVerificationPrompt(false);
-          setIsEnabled(true);
-          toast({
-            title: "2FA Enabled",
-            description: "Two-factor authentication has been enabled",
-          });
-        },
-        onError: (ctx) => {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description:
-              ctx.error.message || "Failed to verify two-factor code",
-          });
-        },
-      },
-    );
+      });
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+        return;
+      }
+
+      setIsEnabled(true);
+      setShowVerificationPrompt(false);
+      toast({
+        title: "2FA Enabled",
+        description: "Two-factor authentication has been successfully enabled",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDisable2FA = async () => {
@@ -99,26 +126,14 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
     );
   };
 
-  const handleSendOtp = async () => {
-    const { error } = await authClient.twoFactor.sendOtp();
-
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to send verification code",
-      });
-    }
-  };
-
   const verifyPassword = trpc.users.verifyUserPassword.useMutation({
     onSuccess: async () => {
       setShowPasswordPrompt(false);
       if (isEnabled) {
         handleDisable2FA();
       } else {
-        await handleSendOtp();
         setShowVerificationPrompt(true);
+        await handleEnable2FA();
       }
     },
     onError: (error) => {
@@ -214,6 +229,7 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
               />
             </div>
           </div>
+
           <div className="flex justify-end">
             <Button
               type="button"
