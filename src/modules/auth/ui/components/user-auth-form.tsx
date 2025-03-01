@@ -9,7 +9,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "@/hook/use-toast";
 import { cn } from "@/lib/utils";
 import {
   Form,
@@ -29,6 +28,7 @@ import {
   userAuthData,
 } from "../../schema";
 import { tryCatch } from "@/lib/try-catch";
+import { toast } from "sonner";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -55,15 +55,12 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
         onError: (ctx) => {
-          toast({
+          toast("Sign up failed", {
             description: ctx.error.message,
-            variant: "destructive",
-            title: "Sign up failed",
           });
         },
         onSuccess: () => {
-          toast({
-            title: "Account created",
+          toast("Account created", {
             description: "Account created successfully",
           });
           router.push("/");
@@ -74,22 +71,15 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
         onError: (ctx) => {
-          toast({
-            description: ctx.error.message,
-            variant: "destructive",
-            title: "Authentication failed",
+          toast("Authentication failed", {
+            description: "Something went wrong. Please try again!",
           });
         },
         onSuccess: async (ctx) => {
           if (ctx.data.twoFactorRedirect) {
             await handleSendOTP();
           } else {
-            toast({
-              title: "Success",
-              description: "Signed in successfully",
-            });
             router.push("/");
-            router.refresh();
           }
         },
       });

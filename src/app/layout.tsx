@@ -1,7 +1,7 @@
 import NextTopLoader from "nextjs-toploader";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
+
 import { TRPCProvider } from "@/trpc/client";
 
 import { fonts } from "@/lib/fonts";
@@ -13,6 +13,7 @@ import {
   OrganizationJsonLd,
   WebsiteSchemaJsonLd,
 } from "@/components/seo/structured-data";
+import { Toaster } from "sonner";
 
 export const metadata = SiteConfig;
 
@@ -43,8 +44,10 @@ export default function RootLayout({
         >
           <TRPCProvider key={0}>
             <NextTopLoader />
-            <div>{children}</div>
-            <Toaster />
+            <div>
+              {children}
+              <Toaster />
+            </div>
           </TRPCProvider>
         </ThemeProvider>
       </body>

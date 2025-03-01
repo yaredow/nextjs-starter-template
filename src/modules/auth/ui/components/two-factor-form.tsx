@@ -7,7 +7,6 @@ import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "@/hook/use-toast";
 
 import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
@@ -34,6 +33,7 @@ import {
 
 import { TwoFactorFormSchema, TwoFactorFormValues } from "../../schema";
 import { tryCatch } from "@/lib/try-catch";
+import { toast } from "sonner";
 
 interface TwoFactorFormProps {}
 
@@ -61,10 +61,8 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
     }
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Verification failed",
-        description: error.message || "Please check your code and try again.",
+      toast("Verification failed", {
+        description: "Please check your code and try again.",
       });
       setIsLoading(false);
       return;
@@ -75,24 +73,16 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
     const { data, error } = await tryCatch(authClient.twoFactor.sendOtp());
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Failed to resend code",
+      toast("Failed to resend code", {
         description: "Please try again later.",
       });
     }
 
     if (data) {
-      toast({
-        title: "Code sent",
+      toast("Code sent", {
         description: "A new verification code has been sent to your email.",
       });
     }
-
-    toast({
-      title: "Code sent",
-      description: "A new verification code has been sent to your email.",
-    });
   };
 
   return (

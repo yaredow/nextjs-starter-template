@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "@/hook/use-toast";
 import { useRouter } from "next/navigation";
 
 import { PasswordFormValues, PasswordSchema } from "../../schema";
+import { toast } from "sonner";
 
 export function UpdatePasswordForm() {
   const router = useRouter();
@@ -34,16 +34,15 @@ export function UpdatePasswordForm() {
       },
       {
         onSuccess() {
-          toast({
+          toast("Password updated", {
             description: "Password updated successfully",
           });
           router.push("/profile");
         },
         onError(error) {
           console.error(error);
-          toast({
+          toast("Error", {
             description: "Something went wrong",
-            variant: "destructive",
           });
         },
       },

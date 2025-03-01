@@ -68,6 +68,7 @@
     "resend": "^4.1.2",
     "server-only": "^0.0.1",
     "sharp": "^0.33.4",
+    "sonner": "^2.0.1",
     "stripe": "^17.6.0",
     "superjson": "^2.2.2",
     "tailwind-merge": "^2.6.0",

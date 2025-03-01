@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/hook/use-toast";
 import { trpc } from "@/trpc/client";
 import {
   Dialog,
@@ -17,6 +16,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ErrorBoundary } from "react-error-boundary";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 interface TwoFactorToggleProps {
   userId: string;
@@ -24,7 +25,7 @@ interface TwoFactorToggleProps {
 
 export const TwoFactorToggle = ({ userId }: TwoFactorToggleProps) => {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<Loader2 className="animate-spin" />}>
       <ErrorBoundary fallback={<p>Error</p>}>
         <TwoFactorToggleSuspense userId={userId} />
       </ErrorBoundary>
@@ -50,9 +51,7 @@ const TwoFactorToggleSuspense = ({ userId }: TwoFactorToggleProps) => {
       }
     },
     onError: (error) => {
-      toast({
-        variant: "destructive",
-        title: "Error",
+      toast("Error", {
         description: "Failed to verify password",
       });
     },
@@ -70,9 +69,7 @@ const TwoFactorToggleSuspense = ({ userId }: TwoFactorToggleProps) => {
       });
 
       if (error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
+        toast("Error", {
           description: error.message,
         });
         return;
@@ -81,8 +78,7 @@ const TwoFactorToggleSuspense = ({ userId }: TwoFactorToggleProps) => {
       await utils.users.getUser.invalidate();
 
       setDialogOpen(false);
-      toast({
-        title: "2FA Enabled",
+      toast("2FA Enabled", {
         description: "Two-factor authentication has been successfully enabled",
       });
     } finally {
@@ -101,15 +97,12 @@ const TwoFactorToggleSuspense = ({ userId }: TwoFactorToggleProps) => {
           utils.users.getUser.invalidate();
 
           setDialogOpen(false);
-          toast({
-            title: "2FA Disabled",
+          toast("2FA Disabled", {
             description: "Two-factor authentication has been disabled",
           });
         },
         onError: (ctx) => {
-          toast({
-            variant: "destructive",
-            title: "Error",
+          toast("Error", {
             description:
               ctx.error.message ||
               "Failed to disable two-factor authentication",
