@@ -1,20 +1,15 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { Shield } from "lucide-react";
+import { useState } from "react";
 
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/hook/use-toast";
+
+import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -29,11 +24,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 
-import { authClient } from "@/lib/auth-client";
-import { toast } from "@/hook/use-toast";
-import { Icons } from "@/components/shared/icons";
 import { TwoFactorFormSchema, TwoFactorFormValues } from "../../schema";
+import { tryCatch } from "@/lib/try-catch";
 
 interface TwoFactorFormProps {}
 
@@ -66,72 +66,117 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
         title: "Verification failed",
         description: error.message || "Please check your code and try again.",
       });
+      setIsLoading(false);
       return;
     }
   };
 
+  const handleResendCode = async () => {
+    const { data, error } = await tryCatch(authClient.twoFactor.sendOtp());
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to resend code",
+        description: "Please try again later.",
+      });
+    }
+
+    if (data) {
+      toast({
+        title: "Code sent",
+        description: "A new verification code has been sent to your email.",
+      });
+    }
+
+    toast({
+      title: "Code sent",
+      description: "A new verification code has been sent to your email.",
+    });
+  };
+
   return (
-    <Card className="w-full border-none p-0">
-      <CardHeader>
-        <CardTitle>Two-Factor Authentication</CardTitle>
+    <Card className="w-full shadow-sm">
+      <CardHeader className="space-y-1 text-center">
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+          <Shield className="h-5 w-5 text-primary" />
+        </div>
+        <CardTitle className="text-xl">Verification Required</CardTitle>
         <CardDescription>
-          Please enter the 6-digit verification code sent to your email.
+          Enter the 6-digit code sent to your email
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="code"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Verification Code</FormLabel>
+                <FormItem className="space-y-3">
                   <FormControl>
-                    <InputOTP
-                      maxLength={6}
-                      value={field.value}
-                      onChange={field.onChange}
-                      disabled={isLoading}
-                    >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
-                      </InputOTPGroup>
-                    </InputOTP>
+                    <div className="flex justify-center">
+                      <InputOTP
+                        maxLength={6}
+                        value={field.value}
+                        onChange={field.onChange}
+                        disabled={isLoading}
+                        className="gap-2"
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </div>
                   </FormControl>
-                  <FormDescription>
-                    Didn&apos;t receive a code?{" "}
-                    <Button
-                      variant="link"
-                      className="h-auto p-0 text-sm"
-                      type="button"
-                      disabled={isLoading}
-                    >
-                      Resend code
-                    </Button>
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div className="text-center text-sm">
+              <Button
+                variant="link"
+                size="sm"
+                type="button"
+                onClick={handleResendCode}
+                disabled={isLoading}
+                className="h-auto p-0 text-muted-foreground hover:text-primary"
+              >
+                Didn&apos;t receive a code?
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <Button variant="outline" disabled={isLoading} type="button">
+      <CardFooter className="flex justify-between gap-2 border-t bg-muted/50 p-4">
+        <Button
+          variant="outline"
+          className="w-full"
+          disabled={isLoading}
+          type="button"
+          onClick={() => router.push("/login")}
+        >
           Cancel
         </Button>
         <Button
+          className="w-full"
           onClick={form.handleSubmit(onSubmit)}
           disabled={isLoading || !form.formState.isValid}
         >
-          {isLoading && <Icons.spinner className="mr-2 size-4 animate-spin" />}
-          Verify
+          {isLoading ? (
+            <>
+              <Icons.spinner className="mr-2 size-4 animate-spin" />
+              Verifying...
+            </>
+          ) : (
+            "Verify"
+          )}
         </Button>
       </CardFooter>
     </Card>

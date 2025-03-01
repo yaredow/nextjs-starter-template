@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -16,66 +16,57 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface TwoFactorToggleProps {
-  isTwoFactorEnabled: boolean;
+  userId: string;
 }
 
-export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
-  const [isEnabled, setIsEnabled] = useState(isTwoFactorEnabled);
+export const TwoFactorToggle = ({ userId }: TwoFactorToggleProps) => {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <ErrorBoundary fallback={<p>Error</p>}>
+        <TwoFactorToggleSuspense userId={userId} />
+      </ErrorBoundary>
+    </Suspense>
+  );
+};
+
+const TwoFactorToggleSuspense = ({ userId }: TwoFactorToggleProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [password, setPassword] = useState("");
-  const [showVerificationPrompt, setShowVerificationPrompt] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+
+  const [user] = trpc.users.getUser.useSuspenseQuery({ id: userId });
+  const isTwoFactorEnabled = user?.twoFactorEnabled;
+  const utils = trpc.useUtils();
+
+  const verifyPassword = trpc.users.verifyUserPassword.useMutation({
+    onSuccess: async () => {
+      if (isTwoFactorEnabled) {
+        handleDisable2FA();
+      } else {
+        await handleEnable2FA();
+      }
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to verify password",
+      });
+    },
+  });
 
   const handleToggle = async () => {
-    if (isEnabled) {
-      setShowPasswordPrompt(true);
-    } else {
-      setShowPasswordPrompt(true);
-    }
+    setDialogOpen(true);
   };
 
   const handleEnable2FA = async () => {
     setIsLoading(true);
     try {
-      const { error: enable2faError } = await authClient.twoFactor.enable({
-        password,
-      });
-
-      if (enable2faError) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: enable2faError.message,
-        });
-
-        return;
-      }
-
-      const { error } = await authClient.twoFactor.sendOtp();
-
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message,
-        });
-        return;
-      }
-
-      setShowVerificationPrompt(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleVerify2FA = async () => {
-    setIsLoading(true);
-    try {
-      const { error } = await authClient.twoFactor.verifyOtp({
-        code: verificationCode,
+      const { error } = await authClient.twoFactor.enable({
+        password: password,
       });
 
       if (error) {
@@ -87,8 +78,9 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
         return;
       }
 
-      setIsEnabled(true);
-      setShowVerificationPrompt(false);
+      await utils.users.getUser.invalidate();
+
+      setDialogOpen(false);
       toast({
         title: "2FA Enabled",
         description: "Two-factor authentication has been successfully enabled",
@@ -106,8 +98,9 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
       },
       {
         onSuccess: () => {
-          setIsEnabled(false);
-          setShowPasswordPrompt(false);
+          utils.users.getUser.invalidate();
+
+          setDialogOpen(false);
           toast({
             title: "2FA Disabled",
             description: "Two-factor authentication has been disabled",
@@ -124,44 +117,33 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
         },
       },
     );
+    setIsLoading(false);
   };
 
-  const verifyPassword = trpc.users.verifyUserPassword.useMutation({
-    onSuccess: async () => {
-      setShowPasswordPrompt(false);
-      if (isEnabled) {
-        handleDisable2FA();
-      } else {
-        setShowVerificationPrompt(true);
-        await handleEnable2FA();
-      }
-    },
-    onError: (error) => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to verify password",
-      });
-    },
-  });
+  const handleVerifyPasswordSubmit = () => {
+    verifyPassword.mutate({ password });
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+    setPassword("");
+  };
 
   return (
     <>
       <Switch
-        checked={isEnabled}
+        checked={isTwoFactorEnabled || false}
         onCheckedChange={handleToggle}
-        disabled={isLoading}
+        disabled={isLoading || verifyPassword.isPending}
         aria-label="Toggle 2FA"
       />
 
-      <Dialog
-        open={showPasswordPrompt}
-        onOpenChange={() => setShowPasswordPrompt(false)}
-      >
+      <Dialog open={dialogOpen} onOpenChange={(open) => !open && closeDialog()}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>
-              {isEnabled ? "Disable" : "Enable"} Two-Factor Authentication
+              {isTwoFactorEnabled ? "Disable" : "Enable"} Two-Factor
+              Authentication
             </DialogTitle>
             <DialogDescription>
               Please enter your password to confirm this action.
@@ -178,76 +160,28 @@ export function TwoFactorToggle({ isTwoFactorEnabled }: TwoFactorToggleProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="col-span-3"
+                autoComplete="current-password"
               />
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setShowPasswordPrompt(false)}
-            >
+            <Button type="button" variant="secondary" onClick={closeDialog}>
               Cancel
             </Button>
             <Button
               type="submit"
-              disabled={isLoading}
-              onClick={() => verifyPassword.mutate({ password })}
+              disabled={isLoading || verifyPassword.isPending}
+              onClick={handleVerifyPasswordSubmit}
             >
-              {verifyPassword.isPending
+              {verifyPassword.isPending || isLoading
                 ? "Please wait..."
-                : isEnabled
+                : isTwoFactorEnabled
                   ? "Disable"
                   : "Enable"}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-
-      <Dialog
-        open={showVerificationPrompt}
-        onOpenChange={() => setShowVerificationPrompt(false)}
-      >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Verify Two-Factor Authentication</DialogTitle>
-            <DialogDescription>
-              Please enter the verification code sent to your email.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="code" className="text-right">
-                Verification Code
-              </Label>
-              <Input
-                type="text"
-                id="code"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                className="col-span-3"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setShowVerificationPrompt(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              onClick={handleVerify2FA}
-            >
-              Verify
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
-}
+};
