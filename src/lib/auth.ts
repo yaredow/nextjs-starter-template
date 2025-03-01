@@ -1,6 +1,5 @@
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins/two-factor";
-import { emailOTP } from "better-auth/plugins/email-otp";
 import { betterAuth } from "better-auth";
 
 import TwoFactorEmail from "@/emails/2fa-verification-email";
@@ -45,6 +44,7 @@ export const auth = betterAuth({
   }),
   plugins: [
     twoFactor({
+      skipVerificationOnEnable: true,
       otpOptions: {
         async sendOTP({ otp, user }, request) {
           const { error } = await tryCatch(
@@ -55,7 +55,7 @@ export const auth = betterAuth({
               react: TwoFactorEmail({
                 verificationCode: otp,
                 companyName: "Next start",
-                userName: user.name,
+                name: user.name,
                 supportEmail: "yaredyilma11@gmail.com",
               }),
             }),

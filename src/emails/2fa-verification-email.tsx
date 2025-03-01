@@ -11,8 +11,8 @@ import {
 import { Tailwind } from "@react-email/tailwind";
 
 interface TwoFactorEmailProps {
+  name: string;
   verificationCode: string;
-  userName?: string;
   companyName?: string;
   expiryTime?: string;
   logoUrl?: string;
@@ -20,13 +20,15 @@ interface TwoFactorEmailProps {
 }
 
 export default function TwoFactorEmail({
-  verificationCode = "123456",
-  userName = "there",
+  name,
+  verificationCode,
   companyName = "Your App Name",
   expiryTime = "10 minutes",
   logoUrl = "https://res.cloudinary.com/diqgie9yt/image/upload/v1716035067/konjo-habesha/logo_ktkdhl.png",
   supportEmail = "support@yourapp.com",
 }: TwoFactorEmailProps) {
+  console.log({ verificationCode });
+
   return (
     <Html>
       <Head />
@@ -45,7 +47,9 @@ export default function TwoFactorEmail({
               Verification Code
             </Text>
 
-            <Text className="text-base text-gray-700">Hello {userName},</Text>
+            <Text className="text-base text-gray-700">
+              Hello {name.split(" ")},
+            </Text>
 
             <Text className="text-base text-gray-700">
               Please use the following verification code to complete your

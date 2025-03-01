@@ -28,3 +28,9 @@ export const PasswordSchema = z
   });
 
 export type PasswordFormValues = z.infer<typeof PasswordSchema>;
+
+export const TwoFactorFormSchema = z.object({
+  code: z.string().min(6, "Code must be 6 digits").max(6),
+});
+
+export type TwoFactorFormValues = z.infer<typeof TwoFactorFormSchema>;

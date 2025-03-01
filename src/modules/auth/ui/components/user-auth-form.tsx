@@ -7,6 +7,10 @@ import { useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/hook/use-toast";
+import { cn } from "@/lib/utils";
 import {
   Form,
   FormControl,
@@ -15,11 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "@/hook/use-toast";
-import { cn } from "@/lib/utils";
 
+import { PasswordInput } from "./password-input";
 import {
   SignInData,
   signInSchema,
@@ -27,8 +28,7 @@ import {
   signUpSchema,
   userAuthData,
 } from "../../schema";
-import { PasswordInput } from "./password-input";
-import { TwoFactorForm } from "./two-factor-form";
+import { tryCatch } from "@/lib/try-catch";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -38,11 +38,6 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
   const [isSignup, setIsSignup] = useState<boolean>(type === "register");
-  const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
-  const [twoFactorData, setTwoFactorData] = useState<{
-    sessionId: string;
-    userId: string;
-  } | null>(null);
   const router = useRouter();
 
   const form = useForm<userAuthData>({
@@ -87,12 +82,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
         },
         onSuccess: async (ctx) => {
           if (ctx.data.twoFactorRedirect) {
-            // Handle 2FA verification
-            setTwoFactorData({
-              sessionId: ctx.data.sessionId,
-              userId: ctx.data.userId,
-            });
-            setShowTwoFactor(true);
+            await handleSendOTP();
           } else {
             toast({
               title: "Success",
@@ -103,6 +93,18 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
           }
         },
       });
+    }
+  };
+
+  const handleSendOTP = async () => {
+    const { data, error } = await tryCatch(authClient.twoFactor.sendOtp());
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data) {
+      router.push("/2fa");
     }
   };
 
@@ -122,24 +124,6 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       },
     });
   };
-
-  if (showTwoFactor && twoFactorData) {
-    return (
-      <TwoFactorForm
-        className={className}
-        sessionId={twoFactorData.sessionId}
-        userId={twoFactorData.userId}
-        onSuccess={() => {
-          router.push("/");
-          router.refresh();
-        }}
-        onCancel={() => {
-          setShowTwoFactor(false);
-          setTwoFactorData(null);
-        }}
-      />
-    );
-  }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>

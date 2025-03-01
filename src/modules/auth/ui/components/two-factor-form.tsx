@@ -33,13 +33,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/hook/use-toast";
 import { Icons } from "@/components/shared/icons";
-
-// Define the schema for the OTP input
-const twoFactorFormSchema = z.object({
-  code: z.string().min(6, "Code must be 6 digits").max(6),
-});
-
-type TwoFactorFormValues = z.infer<typeof twoFactorFormSchema>;
+import { TwoFactorFormSchema, TwoFactorFormValues } from "../../schema";
 
 interface TwoFactorFormProps {}
 
@@ -48,7 +42,7 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
   const router = useRouter();
 
   const form = useForm<TwoFactorFormValues>({
-    resolver: zodResolver(twoFactorFormSchema),
+    resolver: zodResolver(TwoFactorFormSchema),
     defaultValues: {
       code: "",
     },
@@ -57,13 +51,13 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
   const onSubmit = async (values: TwoFactorFormValues) => {
     setIsLoading(true);
 
-    const { data, error } = await authClient.twoFactor.verifyTotp({
+    const { data, error } = await authClient.twoFactor.verifyOtp({
       code: values.code,
       trustDevice: true,
     });
 
     if (data) {
-      router.push("/dashboard");
+      router.push("/");
     }
 
     if (error) {
@@ -128,7 +122,7 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-center">
         <Button variant="outline" disabled={isLoading} type="button">
           Cancel
         </Button>
