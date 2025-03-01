@@ -3,9 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 import {
   Form,
   FormControl,
@@ -14,11 +18,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "@/hook/use-toast";
-import { cn } from "@/lib/utils";
 
+import { PasswordInput } from "./password-input";
 import {
   SignInData,
   signInSchema,
@@ -26,7 +27,8 @@ import {
   signUpSchema,
   userAuthData,
 } from "../../schema";
-import { useState } from "react";
+import { tryCatch } from "@/lib/try-catch";
+import { toast } from "sonner";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -52,10 +54,15 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       await authClient.signUp.email(values as SignUpData, {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
-        onError: (error) => {
-          toast({ description: error.error.message });
+        onError: (ctx) => {
+          toast("Sign up failed", {
+            description: ctx.error.message,
+          });
         },
         onSuccess: () => {
+          toast("Account created", {
+            description: "Account created successfully",
+          });
           router.push("/");
         },
       });
@@ -63,13 +70,31 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       await authClient.signIn.email(values as SignInData, {
         onRequest: () => setIsLoading(true),
         onResponse: () => setIsLoading(false),
-        onError: (error) => {
-          toast({ description: error.error.message });
+        onError: (ctx) => {
+          toast("Authentication failed", {
+            description: "Something went wrong. Please try again!",
+          });
         },
-        onSuccess: () => {
-          router.push("/");
+        onSuccess: async (ctx) => {
+          if (ctx.data.twoFactorRedirect) {
+            await handleSendOTP();
+          } else {
+            router.push("/");
+          }
         },
       });
+    }
+  };
+
+  const handleSendOTP = async () => {
+    const { data, error } = await tryCatch(authClient.twoFactor.sendOtp());
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data) {
+      router.push("/2fa");
     }
   };
 
@@ -93,31 +118,32 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
-        {isSignup && (
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your Name"
-                    type="text"
-                    autoCapitalize="none"
-                    autoComplete="name"
-                    autoCorrect="off"
-                    disabled={isLoading || isGoogleLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          {isSignup && (
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      className={cn(isLoading && "opacity-50")}
+                      placeholder="Your Name"
+                      type="text"
+                      autoCapitalize="none"
+                      autoComplete="name"
+                      autoCorrect="off"
+                      disabled={isLoading || isGoogleLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
           <div className="grid gap-2">
             <FormField
               control={form.control}
@@ -127,6 +153,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
+                      className={cn(isLoading && "opacity-50")}
                       placeholder="name@example.com"
                       type="email"
                       autoCapitalize="none"
@@ -148,15 +175,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="********"
-                      type="password"
-                      autoCapitalize="none"
-                      autoComplete="current-password"
-                      autoCorrect="off"
-                      disabled={isLoading || isGoogleLoading}
-                      {...field}
-                    />
+                    <PasswordInput placeholder="Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

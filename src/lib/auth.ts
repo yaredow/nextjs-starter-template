@@ -1,22 +1,24 @@
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { twoFactor } from "better-auth/plugins/two-factor";
 import { betterAuth } from "better-auth";
 
-import { account, session, user, verification } from "@/db/schema";
+import TwoFactorEmail from "@/emails/2fa-verification-email";
 import { db } from "@/db";
+import {
+  account,
+  session,
+  twoFactor as twoFactorModel,
+  user,
+  verification,
+} from "@/db/schema";
 
 import { hashPassword, verifyPassword } from "./utils";
+import { tryCatch } from "./try-catch";
+import { resend } from "./resend";
 
 export const auth = betterAuth({
-  user: {
-    additionalFields: {
-      stripeCustomerId: {
-        type: "string",
-        required: false,
-        defaultValue: "",
-        input: false,
-      },
-    },
-  },
+  appName: "Next start",
+
   emailAndPassword: {
     enabled: true,
     password: {
@@ -37,6 +39,34 @@ export const auth = betterAuth({
       session,
       account,
       verification,
+      twoFactor: twoFactorModel,
     },
   }),
+  plugins: [
+    twoFactor({
+      skipVerificationOnEnable: true,
+      otpOptions: {
+        async sendOTP({ otp, user }, request) {
+          const { error } = await tryCatch(
+            resend.emails.send({
+              from: "yaredyilma11@gmail.com",
+              to: user.email,
+              subject: "Your OTP",
+              react: TwoFactorEmail({
+                verificationCode: otp,
+                companyName: "Next start",
+                name: user.name,
+                supportEmail: "yaredyilma11@gmail.com",
+              }),
+            }),
+          );
+
+          if (error) {
+            console.error(error);
+            throw new Error("Failed to send OTP");
+          }
+        },
+      },
+    }),
+  ],
 });
