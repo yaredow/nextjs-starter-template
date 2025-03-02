@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { UserAuthForm } from "@/modules/auth/ui/components/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
-import { Icons } from "@/components/shared/icons";
 import { cn } from "@/lib/utils";
 
 export const metadata = {
