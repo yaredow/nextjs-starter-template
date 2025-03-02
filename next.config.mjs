@@ -8,6 +8,9 @@ const nextConfig = {
       { hostname: "platform-lookaside.fbsbx.com" },
     ],
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
 };
 
 export default nextConfig;

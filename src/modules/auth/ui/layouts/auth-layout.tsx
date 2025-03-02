@@ -3,5 +3,5 @@ interface AuthLayoutProps {
 }
 
 export const AuthLayout = ({ children }: AuthLayoutProps) => {
-  return <div className="min-h-screen">{children}</div>;
+  return <div className="min-h-screen w-full">{children}</div>;
 };

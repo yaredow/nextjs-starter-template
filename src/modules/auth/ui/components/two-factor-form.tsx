@@ -86,7 +86,7 @@ export function TwoFactorForm({}: TwoFactorFormProps) {
   };
 
   return (
-    <Card className="w-full shadow-sm">
+    <Card className="w-full max-w-lg p-0 shadow-none">
       <CardHeader className="space-y-1 text-center">
         <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
           <Shield className="h-5 w-5 text-primary" />

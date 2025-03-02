@@ -27,8 +27,6 @@ export default function TwoFactorEmail({
   logoUrl = "https://res.cloudinary.com/diqgie9yt/image/upload/v1716035067/konjo-habesha/logo_ktkdhl.png",
   supportEmail = "support@yourapp.com",
 }: TwoFactorEmailProps) {
-  console.log({ verificationCode });
-
   return (
     <Html>
       <Head />
